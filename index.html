@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VietGuide &mdash; Vietnam Travel Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#0D1B2A;--navy2:#152236;--navy3:#1E3050;--gold:#C9A84C;--gold2:#E8C76A;--cream:#F7F2EA;--cream2:#EDE8DF;--red:#D85A30;--green:#1D9E75;--white:#FFFFFF;--text:#1a1208;--muted:#7a6a52;--border:#E0D8CC;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);}
+button{font-family:inherit;cursor:pointer;}
+a{color:var(--gold);}
+.app{max-width:1000px;margin:0 auto;background:var(--cream);min-height:100vh;box-shadow:0 0 80px rgba(13,27,42,0.15);}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:62px;background:var(--navy);position:sticky;top:0;z-index:1000;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;border:none;background:transparent;}
+.logo-mark{width:32px;height:32px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.nav-links{display:flex;gap:2px;flex:1;justify-content:center;}
+.nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,0.55);cursor:pointer;padding:7px 12px;border-radius:7px;transition:all .15s;white-space:nowrap;border:none;background:transparent;}
+.nav-link:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.nav-link.active{color:var(--gold);background:rgba(201,168,76,0.12);}
+
+/* LANGUAGE */
+.lang-selector{position:relative;flex-shrink:0;}
+.lang-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:13px;color:#fff;}
+.lang-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:0.5px solid var(--border);border-radius:10px;box-shadow:0 12px 48px rgba(13,27,42,0.2);min-width:165px;z-index:2000;display:none;overflow:hidden;}
+.lang-dropdown.open{display:block;}
+.lang-option{padding:10px 14px;font-size:13px;color:var(--text);cursor:pointer;transition:background .1s;}
+.lang-option:hover{background:var(--cream);}
+.lang-option.active{color:var(--gold);font-weight:700;background:#FBF7EE;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;animation:pageIn .2s ease;}
+@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO */
+.hero{background:var(--navy);padding:72px 40px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(201,168,76,0.12),transparent 60%),radial-gradient(ellipse at 10% 100%,rgba(216,90,48,0.07),transparent 55%);pointer-events:none;}
+.hero h1{font-family:'Playfair Display',serif;font-size:50px;font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:18px;color:#fff;position:relative;}
+.accent{color:var(--gold);}
+.hero-sub{font-size:17px;color:rgba(255,255,255,0.5);max-width:480px;margin:0 auto 36px;line-height:1.65;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+.btn-primary{background:var(--gold);color:var(--navy);border:none;padding:13px 26px;border-radius:10px;font-size:14px;font-weight:700;transition:all .15s;}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.35);}
+.btn-ghost{background:rgba(255,255,255,0.07);color:#fff;border:0.5px solid rgba(255,255,255,0.18);padding:13px 26px;border-radius:10px;font-size:14px;font-weight:500;transition:all .15s;}
+.btn-ghost:hover{background:rgba(255,255,255,0.13);}
+.hero-stats{display:flex;justify-content:center;border-top:0.5px solid rgba(255,255,255,0.08);padding-top:40px;flex-wrap:wrap;}
+.stat-item{padding:0 32px;text-align:center;border-right:0.5px solid rgba(255,255,255,0.08);}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);letter-spacing:-1px;}
+.stat-lbl{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;}
+
+/* SECTIONS */
+.why-section{padding:72px 40px;background:var(--cream);border-bottom:0.5px solid var(--border);}
+.section-eyebrow{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+.section-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:800;color:var(--navy);letter-spacing:-1px;margin-bottom:8px;line-height:1.2;}
+.section-sub{font-size:15px;color:var(--muted);margin-bottom:40px;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.compare-card{border-radius:14px;padding:24px;}
+.card-generic{background:#F0EDE8;border:0.5px solid var(--border);}
+.card-viet{background:var(--navy);border:0.5px solid var(--navy3);}
+.card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;}
+.generic-lbl{color:var(--muted);}.viet-lbl{color:var(--gold);}
+.feature-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px;}
+.ficon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.ficon-x{background:#DDD8D0;color:var(--muted);}
+.ficon-check{background:rgba(201,168,76,0.2);color:var(--gold);}
+.feat-text strong{font-size:13px;font-weight:600;display:block;margin-bottom:2px;}
+.card-generic .feat-text strong{color:var(--text);}
+.card-viet .feat-text strong{color:#fff;}
+.feat-text span{font-size:12px;line-height:1.45;}
+.card-generic .feat-text span{color:var(--muted);}
+.card-viet .feat-text span{color:rgba(255,255,255,0.45);}
+
+.features-section{padding:72px 40px;background:var(--navy);}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:36px;}
+.feat-card{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;cursor:pointer;transition:all .2s;}
+.feat-card:hover{background:rgba(255,255,255,0.09);border-color:rgba(201,168,76,0.4);transform:translateY(-2px);}
+.feat-icon{font-size:26px;margin-bottom:14px;}
+.feat-card h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.feat-card p{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.55;}
+
+.quote-section{padding:72px 40px;background:var(--cream2);text-align:center;border-bottom:0.5px solid var(--border);}
+.quote-mark{font-family:'Playfair Display',serif;font-size:80px;color:var(--gold);line-height:.6;margin-bottom:16px;opacity:.4;}
+.big-quote{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);max-width:540px;margin:0 auto 14px;line-height:1.4;letter-spacing:-.5px;}
+.quote-attr{font-size:13px;color:var(--muted);}
+
+.bottom-cta{padding:80px 40px;background:var(--navy);text-align:center;position:relative;overflow:hidden;}
+.bottom-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.1),transparent 70%);pointer-events:none;}
+.bottom-cta h2{font-family:'Playfair Display',serif;font-size:38px;font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:12px;}
+.bottom-cta p{font-size:16px;color:rgba(255,255,255,0.45);margin-bottom:32px;}
+
+/* PAGE HEADERS */
+.page-header{background:var(--navy);padding:48px 40px 36px;position:relative;overflow:hidden;}
+.page-header::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(201,168,76,0.06);pointer-events:none;}
+.page-header .badge{display:inline-block;font-size:11px;font-weight:700;background:rgba(201,168,76,0.15);color:var(--gold);padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;}
+.page-header h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:800;color:#fff;letter-spacing:-.8px;margin-bottom:8px;}
+.page-header p{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6;max-width:520px;}
+
+/* GENERIC */
+.sec{padding:32px 40px;}
+.sec-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;padding-bottom:8px;border-bottom:0.5px solid var(--border);}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
+.icard{background:#fff;border:0.5px solid var(--border);border-radius:12px;padding:20px;}
+.icard-icon{font-size:22px;margin-bottom:10px;}
+.icard h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.icard p{font-size:13px;color:var(--muted);line-height:1.55;}
+.tag{display:inline-block;font-size:10px;font-weight:700;background:rgba(201,168,76,0.12);color:#8B6914;padding:3px 9px;border-radius:20px;margin-top:10px;}
+.tag-green{background:#EAF3DE;color:#3B6D11;}
+.tag-blue{background:#E6F1FB;color:#185FA5;}
+.tips-list{display:flex;flex-direction:column;gap:10px;}
+.tip-item{background:#fff;border:0.5px solid var(--border);border-radius:12px;padding:18px;display:flex;gap:14px;align-items:flex-start;}
+.tip-num{width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,0.12);color:#8B6914;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tip-item h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.tip-item p{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* TIPS PAGE */
+.tips-ai-bar{background:var(--navy2);padding:16px 40px;display:flex;align-items:center;gap:14px;}
+.tips-ai-icon{width:38px;height:38px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tips-ai-text strong{display:block;font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+.tips-ai-text span{font-size:12px;color:rgba(255,255,255,0.4);}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px;}
+.tips-topic-card{background:#fff;border:0.5px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .18s;}
+.tips-topic-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,0.12);transform:translateY(-1px);}
+.ttc-icon{font-size:24px;margin-bottom:10px;}
+.tips-topic-card h3{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.tips-topic-card p{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* CITY SELECTOR */
+.city-selector-bar{padding:16px 40px 12px;background:var(--navy2);border-bottom:0.5px solid var(--navy3);}
+.city-selector-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.city-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.city-pill{font-size:12px;font-weight:600;padding:6px 16px;border:0.5px solid rgba(255,255,255,0.15);border-radius:20px;cursor:pointer;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.04);transition:all .15s;}
+.city-pill:hover{border-color:var(--gold);color:var(--gold);}
+.city-pill.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700;}
+
+/* WEATHER */
+.weather-bar{background:var(--navy2);padding:0 40px 14px;}
+.weather-widget{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 18px;}
+.weather-main{display:flex;align-items:center;gap:14px;}
+.weather-icon{font-size:30px;}
+.weather-city{font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;}
+.weather-temp{font-size:20px;font-weight:800;color:#fff;}
+.weather-temp span{font-size:12px;font-weight:400;color:rgba(255,255,255,0.35);margin-left:6px;}
+.weather-desc{font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.weather-extras{margin-left:auto;text-align:right;font-size:12px;color:rgba(255,255,255,0.4);display:flex;flex-direction:column;gap:3px;}
+.weather-alert{font-size:12px;color:#f0c070;background:rgba(201,168,76,0.12);border:0.5px solid rgba(201,168,76,0.25);border-radius:7px;padding:7px 12px;margin-top:6px;}
+
+/* MAP CONTROLS */
+.map-controls-bar{display:flex;gap:8px;padding:10px 40px;background:var(--cream);border-bottom:0.5px solid var(--border);flex-wrap:wrap;align-items:center;}
+.map-controls-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px;}
+.map-ctrl-btn{font-size:12px;font-weight:600;padding:5px 13px;border:0.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);background:#fff;transition:all .15s;}
+.map-ctrl-btn:hover{border-color:var(--gold);color:#8B6914;}
+.active-3d{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important;}
+
+/* MAP LAYOUT */
+.map-wrap{padding:16px 40px 40px;}
+.map-layout{display:flex;height:580px;border:0.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(13,27,42,0.1);}
+.map-sidebar{width:280px;flex-shrink:0;border-right:0.5px solid var(--border);display:flex;flex-direction:column;overflow:hidden;background:#fff;}
+.map-search-box{padding:12px 14px 6px;}
+.map-search-wrap{position:relative;}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;}
+.map-search{width:100%;padding:8px 10px 8px 30px;border:0.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--cream);color:var(--text);outline:none;font-family:inherit;}
+.map-search:focus{border-color:var(--gold);}
+.filter-tabs{display:flex;gap:4px;padding:6px 14px 10px;flex-wrap:wrap;}
+.ftab{font-size:11px;font-weight:600;padding:4px 10px;border:0.5px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);background:transparent;transition:all .15s;}
+.ftab.active{background:rgba(201,168,76,0.12);color:#8B6914;border-color:var(--gold);}
+.map-route-box{margin:0 14px 8px;background:var(--cream);border:0.5px solid var(--border);border-radius:10px;padding:12px;}
+.route-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.route-hint{font-size:10px;color:#c0b09a;margin-bottom:8px;}
+.route-inputs{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.route-input-wrap{display:flex;align-items:center;gap:7px;}
+.route-letter{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.route-a{background:var(--green);}.route-b{background:var(--red);}
+.route-input-wrap input{flex:1;padding:6px 9px;border:0.5px solid var(--border);border-radius:7px;font-size:12px;background:#fff;color:var(--text);outline:none;font-family:inherit;min-width:0;}
+.route-input-wrap input:focus{border-color:var(--gold);}
+.route-swap-mini{text-align:center;font-size:15px;color:var(--muted);cursor:pointer;padding:1px 0;user-select:none;transition:color .15s;}
+.route-swap-mini:hover{color:var(--gold);}
+.route-btn{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:5px;transition:background .15s;font-family:inherit;}
+.route-btn:hover{background:var(--navy3);}
+.route-clear{width:100%;background:transparent;color:var(--muted);border:0.5px solid var(--border);border-radius:7px;padding:6px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.route-clear:hover{border-color:var(--red);color:var(--red);}
+.places-list{flex:1;overflow-y:auto;padding:0 14px 14px;}
+.place-item{padding:10px;border-radius:8px;cursor:pointer;margin-bottom:6px;border:0.5px solid transparent;transition:all .15s;}
+.place-item:hover{background:var(--cream);border-color:var(--border);}
+.place-item.selected{background:#FBF7EE;border-color:var(--gold);}
+.place-item-top{display:flex;align-items:center;gap:8px;margin-bottom:2px;}
+.place-dot{border-radius:50%;flex-shrink:0;}
+.place-dot.dot-airport{width:10px;height:10px;background:var(--red);}
+.place-dot.dot-landmark{width:11px;height:11px;background:var(--green);}
+.place-dot.dot-food{width:9px;height:9px;background:var(--gold);}
+.place-name{font-size:12px;font-weight:600;color:var(--navy);}
+.place-cat{font-size:10px;color:var(--muted);margin-bottom:1px;}
+.place-coords{font-size:10px;color:#c0b09a;font-family:monospace;}
+#map-container{height:100%;width:100%;}
+
+/* MAP INFO PANEL */
+.map-info-panel{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--gold);border-radius:12px 12px 0 0;padding:16px;z-index:500;display:none;box-shadow:0 -4px 20px rgba(0,0,0,0.12);}
+.map-info-panel.visible{display:block;}
+.map-info-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:3px;}
+.map-info-name{font-size:15px;font-weight:700;color:var(--navy);}
+.map-info-close{cursor:pointer;color:var(--muted);font-size:15px;background:none;border:none;font-family:inherit;}
+.map-info-cat{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+.map-info-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:8px;}
+.map-info-coords{font-size:10px;color:#c0b09a;font-family:monospace;margin-bottom:12px;}
+.map-info-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.info-more-btn{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.info-route-btn{background:#FBF7EE;color:#8B6914;border:0.5px solid var(--gold);border-radius:7px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+.info-ai-btn{background:var(--cream);color:var(--text);border:0.5px solid var(--border);border-radius:7px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit;}
+
+/* ROUTE RESULT */
+.route-result{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--gold);border-radius:12px 12px 0 0;padding:18px;z-index:600;display:none;box-shadow:0 -4px 24px rgba(0,0,0,0.15);max-height:65%;overflow-y:auto;}
+.route-result.visible{display:block;}
+.route-result-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.route-result-label{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+.route-result-title{font-size:13px;font-weight:700;color:var(--navy);display:block;}
+.route-result-close{background:var(--cream);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted);font-family:inherit;}
+.route-loading{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
+.route-error{padding:14px;background:#FEF4F0;border:0.5px solid #F0C4AA;border-radius:8px;color:#C4501A;font-size:13px;}
+.route-option{border:0.5px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;transition:all .15s;}
+.route-option:hover{border-color:var(--gold);background:#FBF7EE;}
+.route-option-best{border-color:var(--gold);background:#FEFBF3;}
+.route-best-badge{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.route-opt-left{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.route-opt-icon{font-size:22px;}
+.route-opt-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.route-opt-detail{font-size:11px;color:var(--muted);}
+.route-opt-right{display:flex;align-items:center;justify-content:space-between;}
+.route-opt-price{font-size:16px;font-weight:800;color:var(--gold);}
+.route-opt-time{font-size:11px;color:var(--muted);}
+.route-book-btn{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;}
+.route-book-btn:hover{background:var(--navy3);}
+.route-ai-btn{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;font-family:inherit;transition:background .15s;}
+.route-ai-btn:hover{background:var(--navy3);}
+
+/* TRANSPORT PAGE */
+.transport-planner{background:var(--navy);padding:28px 40px;}
+.planner-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:18px;}
+.planner-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.planner-field{flex:1;}
+.planner-field label{display:block;font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.planner-field select{width:100%;padding:11px 13px;border:0.5px solid rgba(255,255,255,0.15);border-radius:9px;font-size:13px;background:rgba(255,255,255,0.07);color:#fff;outline:none;cursor:pointer;font-family:inherit;}
+.planner-field select option{background:var(--navy);color:#fff;}
+.planner-swap{font-size:22px;cursor:pointer;color:rgba(255,255,255,0.4);user-select:none;transition:color .15s;padding:4px;}
+.planner-swap:hover{color:var(--gold);}
+.transport-results{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px;min-height:90px;}
+.transport-placeholder{font-size:13px;color:rgba(255,255,255,0.3);text-align:center;padding:20px 0;}
+.transport-result-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:9px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;}
+.transport-result-item:hover{border-color:rgba(201,168,76,0.5);}
+.tri-left{display:flex;align-items:center;gap:12px;}
+.tri-icon{font-size:22px;}
+.tri-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+.tri-detail{font-size:11px;color:rgba(255,255,255,0.4);}
+.tri-right{text-align:right;}
+.tri-price{font-size:15px;font-weight:800;color:var(--gold);}
+.tri-time{font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+.tri-book{display:inline-block;font-size:11px;background:var(--gold);color:var(--navy);border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;font-family:inherit;text-decoration:none;}
+.transport-card{background:#fff;border:0.5px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .18s;}
+.transport-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,0.12);transform:translateY(-1px);}
+.transport-icon{font-size:26px;margin-bottom:10px;}
+.transport-card h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.transport-card p{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px;}
+.transport-steps{list-style:none;margin-bottom:12px;}
+.transport-steps li{font-size:12px;color:var(--muted);padding:2px 0 2px 13px;position:relative;}
+.transport-steps li::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--gold);}
+
+/* VISA PAGE */
+.visa-search-wrap{position:relative;margin-bottom:20px;}
+.visa-search-wrap .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;}
+.visa-search{width:100%;padding:13px 13px 13px 38px;border:0.5px solid var(--border);border-radius:10px;font-size:14px;background:#fff;color:var(--text);outline:none;font-family:inherit;box-shadow:0 4px 20px rgba(13,27,42,0.06);}
+.visa-search:focus{border-color:var(--gold);}
+.countries-list{display:flex;flex-direction:column;gap:8px;}
+.visa-country{background:#fff;border:0.5px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .15s;}
+.visa-country:hover{border-color:var(--gold);background:#FEFBF3;}
+.visa-country span:first-child{font-size:14px;font-weight:500;color:var(--text);}
+.visa-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+.vb-free{background:#EAF3DE;color:#3B6D11;}
+.vb-evisa{background:#E6F1FB;color:#185FA5;}
+.vb-required{background:#FEE8E0;color:#C4501A;}
+
+/* AI BUBBLE */
+.ai-bubble-btn{position:fixed;bottom:28px;right:28px;background:var(--navy);color:#fff;border-radius:50px;padding:13px 22px;display:flex;align-items:center;gap:9px;cursor:pointer;z-index:2000;box-shadow:0 6px 28px rgba(13,27,42,0.35);font-weight:700;font-size:14px;transition:all .2s;user-select:none;border:0.5px solid rgba(201,168,76,0.3);}
+.ai-bubble-btn:hover{background:var(--navy3);transform:translateY(-2px);}
+.ai-bubble-icon{font-size:18px;}
+.ai-notif{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--green);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.ai-chat-window{position:fixed;bottom:88px;right:28px;width:380px;background:#fff;border-radius:16px;border:0.5px solid var(--border);box-shadow:0 12px 48px rgba(13,27,42,0.2);z-index:2000;display:none;flex-direction:column;overflow:hidden;max-height:540px;}
+.ai-chat-window.open{display:flex;}
+.ai-chat-header{padding:14px 18px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--navy);}
+.ai-chat-title{display:flex;align-items:center;gap:10px;}
+.ai-chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.ai-chat-name{font-size:14px;font-weight:700;color:#fff;}
+.ai-chat-status{font-size:10px;color:var(--green);}
+.ai-chat-close{background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:18px;cursor:pointer;line-height:1;}
+.ai-chat-close:hover{color:#fff;}
+.ai-chat-context{background:rgba(201,168,76,0.08);border-bottom:0.5px solid rgba(201,168,76,0.2);padding:8px 16px;font-size:11px;color:#8B6914;font-weight:500;}
+.ai-chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:220px;}
+.ai-msg{max-width:85%;}
+.ai-msg-bot{align-self:flex-start;}
+.ai-msg-user{align-self:flex-end;}
+.ai-bubble-msg{padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.55;}
+.ai-msg-bot .ai-bubble-msg{background:var(--cream);border:0.5px solid var(--border);color:var(--text);border-bottom-left-radius:3px;}
+.ai-msg-user .ai-bubble-msg{background:var(--navy);color:#fff;border-bottom-right-radius:3px;}
+.ai-qr{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.ai-qr button{font-size:11px;font-weight:600;padding:5px 11px;border:0.5px solid var(--gold);color:#8B6914;border-radius:20px;cursor:pointer;background:rgba(201,168,76,0.08);transition:all .15s;font-family:inherit;}
+.ai-qr button:hover{background:rgba(201,168,76,0.18);}
+.ai-chat-input-row{display:flex;gap:8px;padding:12px 14px;border-top:0.5px solid var(--border);background:var(--cream);}
+.ai-chat-input-row input{flex:1;padding:9px 12px;border:0.5px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--text);outline:none;font-family:inherit;}
+.ai-chat-input-row input:focus{border-color:var(--gold);}
+.ai-chat-input-row button{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 15px;cursor:pointer;font-size:15px;font-family:inherit;}
+
+/* TYPING */
+.typing-bubble{display:flex;align-items:center;gap:4px;padding:14px 16px!important;}
+.typing-bubble span{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block;animation:tb 1.2s infinite;}
+.typing-bubble span:nth-child(2){animation-delay:.2s;}
+.typing-bubble span:nth-child(3){animation-delay:.4s;}
+@keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.3}30%{transform:translateY(-5px);opacity:1}}
+
+/* FULL PAGE OVERLAY */
+.full-overlay{position:fixed;inset:0;background:rgba(13,27,42,0.7);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+.full-overlay.open{display:flex;}
+.full-overlay-card{background:#fff;border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;animation:pageIn .25s ease;}
+.full-overlay-hero{background:var(--navy);padding:32px 32px 24px;border-radius:20px 20px 0 0;position:relative;}
+.full-overlay-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;color:#fff;font-family:inherit;}
+.full-overlay-icon{font-size:42px;margin-bottom:12px;}
+.full-overlay-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:4px;}
+.full-overlay-cat{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;}
+.full-overlay-body{padding:28px 32px;}
+.full-overlay-desc{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.full-overlay-coords{font-size:12px;color:#c0b09a;font-family:monospace;background:var(--cream);padding:8px 12px;border-radius:7px;margin-bottom:20px;}
+.full-overlay-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.full-overlay-info{margin-bottom:24px;}
+.full-overlay-info h4{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border);}
+.full-overlay-info p{font-size:14px;color:var(--text);line-height:1.65;}
+
+/* PLACE DETAIL SMALL OVERLAY (old) */
+.overlay{position:fixed;inset:0;background:rgba(13,27,42,0.6);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.overlay-card{background:#fff;border-radius:16px;padding:32px;max-width:500px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+.overlay-close{position:absolute;top:16px;right:16px;background:var(--cream);border:0.5px solid var(--border);border-radius:8px;padding:5px 11px;cursor:pointer;font-size:14px;color:var(--muted);font-family:inherit;}
+
+.footer{padding:24px 40px;background:var(--navy);text-align:center;font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:.03em;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+@media(max-width:700px){
+  .hero{padding:48px 24px 40px;}.hero h1{font-size:32px;letter-spacing:-1px;}
+  .why-section,.features-section,.quote-section,.bottom-cta{padding:48px 24px;}
+  .compare-grid{grid-template-columns:1fr;}
+  .sec{padding:24px;}.map-wrap{padding:12px 16px 24px;}
+  .map-layout{flex-direction:column;height:auto;}
+  .map-sidebar{width:100%;height:auto;border-right:none;border-bottom:0.5px solid var(--border);}
+  #map-container{height:340px;}
+  .city-selector-bar,.tips-ai-bar,.transport-planner,.weather-bar,.map-controls-bar{padding-left:24px;padding-right:24px;}
+  .page-header{padding:36px 24px 28px;}
+  .ai-chat-window{width:calc(100vw - 32px);right:16px;}
+  .nav-links{gap:0;}.nav-link{padding:5px 7px;font-size:11px;}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-logo" onclick="showPage('landing')"><div class="logo-mark">&#127483;&#127475;</div>VietGuide</button>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('landing')" id="nav-landing">Home</button>
+    <button class="nav-link" onclick="showPage('map')" id="nav-map">Explore</button>
+    <button class="nav-link" onclick="showPage('tips')" id="nav-tips">Travel Tips</button>
+    <button class="nav-link" onclick="showPage('transport')" id="nav-transport">Transport</button>
+    <button class="nav-link" onclick="showPage('visas')" id="nav-visas">Visas</button>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn" onclick="toggleLangMenu()"><span id="lang-flag">&#127468;&#127463;</span>&nbsp;<span id="lang-name">EN</span>&nbsp;&#9662;</button>
+    <div class="lang-dropdown" id="lang-dropdown">
+      <div class="lang-option active" onclick="setLang('EN',this)">&#127468;&#127463; English</div>
+      <div class="lang-option" onclick="setLang('VI',this)">&#127483;&#127475; Ti&#7871;ng Vi&#7879;t</div>
+      <div class="lang-option" onclick="setLang('ZH',this)">&#127464;&#127475; &#20013;&#25991;</div>
+      <div class="lang-option" onclick="setLang('KO',this)">&#127472;&#127479; &#54620;&#44397;&#50612;</div>
+      <div class="lang-option" onclick="setLang('JA',this)">&#127471;&#127477; &#26085;&#26412;&#35486;</div>
+      <div class="lang-option" onclick="setLang('FR',this)">&#127467;&#127479; Fran&#231;ais</div>
+      <div class="lang-option" onclick="setLang('DE',this)">&#127465;&#127466; Deutsch</div>
+      <div class="lang-option" onclick="setLang('ES',this)">&#127466;&#127480; Espa&#241;ol</div>
+      <div class="lang-option" onclick="setLang('TH',this)">&#127481;&#127469; &#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;</div>
+      <div class="lang-option" onclick="setLang('RU',this)">&#127479;&#127482; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</div>
+      <div class="lang-option" onclick="setLang('IT',this)">&#127470;&#127481; Italiano</div>
+    </div>
+  </div>
+</nav>
+
+<!-- LANDING PAGE -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <h1>Your Vietnam trip,<br><span class="accent">expertly guided.</span></h1>
+    <p class="hero-sub">AI-powered travel intelligence built exclusively for Vietnam. Maps, visas, transport, food, culture &mdash; all in one place.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openChat('I want to plan a trip to Vietnam. Where should I start?')">Plan my trip with AI &rarr;</button>
+      <button class="btn-ghost" onclick="showPage('map')">Explore the map</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">30+</div><div class="stat-lbl">Mapped locations</div></div>
+      <div class="stat-item"><div class="stat-num">50+</div><div class="stat-lbl">Countries, visa info</div></div>
+      <div class="stat-item"><div class="stat-num">11</div><div class="stat-lbl">Languages</div></div>
+      <div class="stat-item"><div class="stat-num">&#8734;</div><div class="stat-lbl">AI questions answered</div></div>
+    </div>
+  </div>
+  <div class="why-section">
+    <div class="section-eyebrow">Why VietGuide</div>
+    <h2 class="section-title">Generic AI doesn&rsquo;t know Vietnam.</h2>
+    <p class="section-sub">We built something that does. Here&rsquo;s the difference.</p>
+    <div class="compare-grid">
+      <div class="compare-card card-generic">
+        <div class="card-label generic-lbl">Generic AI</div>
+        <div class="feature-row"><div class="ficon ficon-x">&#10005;</div><div class="feat-text"><strong>Generic travel advice</strong><span>Same answer for every country &mdash; not Vietnam-specific</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-x">&#10005;</div><div class="feat-text"><strong>No interactive map</strong><span>Can&rsquo;t show GPS locations, airports, food spots or routes</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-x">&#10005;</div><div class="feat-text"><strong>Outdated visa rules</strong><span>Vietnam&rsquo;s rules change &mdash; generic AI doesn&rsquo;t keep up</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-x">&#10005;</div><div class="feat-text"><strong>No route planning</strong><span>Can&rsquo;t calculate real prices, times and booking links</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-x">&#10005;</div><div class="feat-text"><strong>English only</strong><span>Not built for international visitors from Asia or Europe</span></div></div>
+      </div>
+      <div class="compare-card card-viet">
+        <div class="card-label viet-lbl">VietGuide &#10022;</div>
+        <div class="feature-row"><div class="ficon ficon-check">&#10003;</div><div class="feat-text"><strong>Vietnam-specialist knowledge</strong><span>Every answer tailored to Vietnam &mdash; culture, food, law, customs</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-check">&#10003;</div><div class="feat-text"><strong>Live interactive map</strong><span>Cities, airports, landmarks, food spots &mdash; all pinpointed with GPS</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-check">&#10003;</div><div class="feat-text"><strong>50+ countries visa database</strong><span>Updated 2025 &mdash; step-by-step e-visa guide included</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-check">&#10003;</div><div class="feat-text"><strong>Point-to-point route planner</strong><span>Real prices, travel times, and direct booking links</span></div></div>
+        <div class="feature-row"><div class="ficon ficon-check">&#10003;</div><div class="feat-text"><strong>11 languages</strong><span>Built for visitors from UK, Korea, Japan, China, France and more</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="features-section">
+    <div class="section-eyebrow">What&rsquo;s inside</div>
+    <h2 class="section-title" style="color:#fff;">Everything a traveller needs.</h2>
+    <div class="feat-grid">
+      <div class="feat-card" onclick="showPage('map')"><div class="feat-icon">&#128506;</div><h3>Interactive map</h3><p>Explore by city. Airports, landmarks, food spots &mdash; all pinpointed with real GPS coordinates.</p></div>
+      <div class="feat-card" onclick="showPage('transport')"><div class="feat-icon">&#128652;</div><h3>Route planner</h3><p>Pick two locations. See all transport options &mdash; price, time, one-click booking.</p></div>
+      <div class="feat-card" onclick="showPage('visas')"><div class="feat-icon">&#129044;</div><h3>Visa guide</h3><p>Search your country. Know instantly if you need a visa and exactly how to get one.</p></div>
+      <div class="feat-card" onclick="showPage('tips')"><div class="feat-icon">&#127981;</div><h3>Culture &amp; tips</h3><p>Temples, food, safety, scams &mdash; every card opens an instant AI answer.</p></div>
+      <div class="feat-card" onclick="openChat('What food must I try in Vietnam? Give me your top recommendations.')"><div class="feat-icon">&#127836;</div><h3>Food guide</h3><p>Pho, banh mi, vegetarian, halal &mdash; the AI knows every dish and where to find it.</p></div>
+      <div class="feat-card" onclick="openChat('Create me a detailed 10 day Vietnam itinerary')"><div class="feat-icon">&#128197;</div><h3>AI itineraries</h3><p>Tell the AI your trip length and interests. Get a full day-by-day plan in seconds.</p></div>
+    </div>
+  </div>
+  <div class="quote-section">
+    <div class="quote-mark">&ldquo;</div>
+    <div class="big-quote">Finally &mdash; a travel tool that actually knows Vietnam, not just about it.</div>
+    <div class="quote-attr">Built for first-time visitors and frequent travellers alike</div>
+  </div>
+  <div class="bottom-cta">
+    <h2>Ready to explore Vietnam?</h2>
+    <p>Free to use. No sign-up. Ask anything.</p>
+    <button class="btn-primary" style="font-size:15px;padding:16px 36px;" onclick="openChat('I want to plan a trip to Vietnam. Can you help me?')">Start planning with AI &rarr;</button>
+  </div>
+  <div class="footer">VietGuide &copy; 2025 &middot; Vietnam Travel Intelligence &middot; Built for explorers</div>
+</div>
+
+<!-- EXPLORE / MAP PAGE -->
+<div class="page" id="page-map">
+  <div class="page-header"><div class="badge">Interactive Map</div><h2>Explore Vietnam</h2><p>Select a city, then filter by airports, landmarks, or food spots. Click two pins to plan a route between them.</p></div>
+  <div class="city-selector-bar">
+    <div class="city-selector-label">Select city</div>
+    <div class="city-pills">
+      <button class="city-pill active" onclick="selectCity('all',this)">&#127983; All Vietnam</button>
+      <button class="city-pill" onclick="selectCity('hanoi',this)">&#127982; Hanoi</button>
+      <button class="city-pill" onclick="selectCity('hcmc',this)">&#127756; Ho Chi Minh City</button>
+      <button class="city-pill" onclick="selectCity('danang',this)">&#127958; Da Nang</button>
+      <button class="city-pill" onclick="selectCity('hoian',this)">&#127982; Hoi An</button>
+      <button class="city-pill" onclick="selectCity('hue',this)">&#127963; Hue</button>
+      <button class="city-pill" onclick="selectCity('nhatrang',this)">&#127754; Nha Trang</button>
+      <button class="city-pill" onclick="selectCity('phuquoc',this)">&#127965; Phu Quoc</button>
+    </div>
+  </div>
+  <div class="weather-bar"><div id="weather-widget" class="weather-widget" style="display:none;"></div></div>
+  <div class="map-controls-bar">
+    <span class="map-controls-label">View</span>
+    <button id="toggle-3d-btn" class="map-ctrl-btn" onclick="toggle3D()">&#127758; 3D mode</button>
+    <button class="map-ctrl-btn" onclick="googleMap&&googleMap.setMapTypeId('roadmap')">&#128506; Street</button>
+    <button class="map-ctrl-btn" onclick="googleMap&&googleMap.setMapTypeId('satellite')">&#128752; Satellite</button>
+    <button class="map-ctrl-btn" onclick="googleMap&&googleMap.setMapTypeId('terrain')">&#9968; Terrain</button>
+    <button class="map-ctrl-btn" onclick="googleMap&&googleMap.setMapTypeId('hybrid')">&#127758; Hybrid</button>
+  </div>
+  <div class="map-wrap">
+    <div class="map-layout">
+      <div class="map-sidebar">
+        <div class="map-search-box"><div class="map-search-wrap"><span class="search-icon">&#128269;</span><input class="map-search" type="text" id="place-search" placeholder="Search places..." oninput="filterPlaces(this.value)"/></div></div>
+        <div class="filter-tabs">
+          <button class="ftab active" onclick="filterByCategory('all',this)">All</button>
+          <button class="ftab" onclick="filterByCategory('airport',this)">&#9992; Airports</button>
+          <button class="ftab" onclick="filterByCategory('landmark',this)">&#127981; Landmarks</button>
+          <button class="ftab" onclick="filterByCategory('food',this)">&#127836; Food</button>
+        </div>
+        <div class="map-route-box">
+          <div class="route-label">&#128205; Route planner</div>
+          <div class="route-hint">Click any map pin to set start &amp; destination</div>
+          <div class="route-inputs">
+            <div class="route-input-wrap"><span class="route-letter route-a">A</span><input type="text" id="route-from" placeholder="Start point..." list="places-datalist"/></div>
+            <div class="route-swap-mini" onclick="swapRouteMini()">&#8645;</div>
+            <div class="route-input-wrap"><span class="route-letter route-b">B</span><input type="text" id="route-to" placeholder="Destination..." list="places-datalist"/></div>
+          </div>
+          <datalist id="places-datalist"></datalist>
+          <button class="route-btn" onclick="calculateRoute()">&#128506; Get route</button>
+          <button class="route-clear" onclick="clearRoute()">&#10005; Clear</button>
+        </div>
+        <div class="places-list" id="places-list"></div>
+      </div>
+      <div style="position:relative;flex:1;">
+        <div id="map-container" style="height:100%;width:100%;background:#f5f0e8;display:flex;align-items:center;justify-content:center;color:#9a8a72;font-size:13px;">Loading map...</div>
+        <div class="route-result" id="route-result">
+          <div class="route-result-top"><div><div class="route-result-label">Route options</div><strong id="route-title" class="route-result-title"></strong></div><button class="route-result-close" onclick="closeRouteResult()">&#10005; Close</button></div>
+          <div class="route-options" id="route-options"></div>
+        </div>
+        <div class="map-info-panel" id="map-info">
+          <div class="map-info-top"><div class="map-info-name" id="info-name"></div><button class="map-info-close" onclick="closeInfo()">&#10005;</button></div>
+          <div class="map-info-cat" id="info-cat"></div>
+          <div class="map-info-desc" id="info-desc"></div>
+          <div class="map-info-coords" id="info-coords"></div>
+          <div class="map-info-actions">
+            <button class="info-more-btn" onclick="openFullPlaceDetail()">More info</button>
+            <button class="info-route-btn" onclick="setAsDestination()">Set destination</button>
+            <button class="info-ai-btn" onclick="askAIAboutPlace()">&#129302; Ask AI</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">VietGuide &copy; 2025 &middot; Vietnam Travel Intelligence</div>
+</div>
+
+<!-- TRAVEL TIPS PAGE -->
+<div class="page" id="page-tips">
+  <div class="page-header"><div class="badge">Essential Knowledge</div><h2>Travel tips for Vietnam</h2><p>Tap any card for an instant AI answer. All advice is Vietnam-specific and up to date.</p></div>
+  <div class="tips-ai-bar"><div class="tips-ai-icon">&#129302;</div><div class="tips-ai-text"><strong>Every card opens a conversation with VietGuide AI</strong><span>Ask follow-up questions, get personalised advice, plan your entire trip</span></div></div>
+  <div class="sec">
+    <div class="sec-label">&#127981; Culture &amp; customs</div>
+    <div class="tips-grid">
+      <div class="tips-topic-card" onclick="openChat('Tell me in detail about removing shoes when visiting homes and temples in Vietnam. What are the rules and how do I know when to take them off?')"><div class="ttc-icon">&#128095;</div><h3>Removing shoes</h3><p>Homes, temples &mdash; when and how</p></div>
+      <div class="tips-topic-card" onclick="openChat('What should I wear when visiting temples and pagodas in Vietnam? What is the dress code and what should I bring to cover up?')"><div class="ttc-icon">&#128424;</div><h3>Temple dress code</h3><p>Cover shoulders &amp; knees &mdash; what to bring</p></div>
+      <div class="tips-topic-card" onclick="openChat('What are Vietnamese beds like? I heard they can be very hard compared to Western hotels. What should I expect?')"><div class="ttc-icon">&#128716;</div><h3>Hard beds</h3><p>What to expect in guesthouses vs hotels</p></div>
+      <div class="tips-topic-card" onclick="openChat('How do I greet people respectfully in Vietnam? What cultural etiquette do I need to know about bowing, touching, and interacting with elders?')"><div class="ttc-icon">&#129309;</div><h3>Greetings &amp; etiquette</h3><p>Bowing, two hands, elder customs</p></div>
+      <div class="tips-topic-card" onclick="openChat('Is bargaining expected in Vietnam? Where should I bargain and where not? How do I negotiate properly without being rude?')"><div class="ttc-icon">&#128717;</div><h3>Bargaining</h3><p>Markets yes, shops no &mdash; how to negotiate</p></div>
+      <div class="tips-topic-card" onclick="openChat('What are the tipping customs in Vietnam? How much should I tip at restaurants, for tour guides, massages, and taxi drivers?')"><div class="ttc-icon">&#128181;</div><h3>Tipping customs</h3><p>Restaurants, guides, massage, drivers</p></div>
+    </div>
+    <div class="sec-label" style="margin-top:24px;">&#9888; Essential advice</div>
+    <div class="tips-grid">
+      <div class="tips-topic-card" onclick="openChat('Do many people speak English in Vietnam? How do I communicate when they do not speak English? Any tips or phrases I should know?')"><div class="ttc-icon">&#128483;</div><h3>English speakers</h3><p>Not widely spoken outside tourist areas</p></div>
+      <div class="tips-topic-card" onclick="openChat('Can I flush toilet paper down the toilet in Vietnam? What should I know about using bathrooms and toilets as a tourist?')"><div class="ttc-icon">&#129531;</div><h3>Toilet paper</h3><p>Never flush it &mdash; use the bin provided</p></div>
+      <div class="tips-topic-card" onclick="openChat('Is tap water safe to drink in Vietnam? What about ice cubes in drinks? What water should I drink and what should I avoid?')"><div class="ttc-icon">&#128721;</div><h3>Tap water &amp; ice</h3><p>Never drink tap water or unverified ice</p></div>
+      <div class="tips-topic-card" onclick="openChat('What scams should tourists watch out for in Vietnam? Give me the complete list of common tourist scams and how to avoid them.')"><div class="ttc-icon">&#9888;</div><h3>Scams to avoid</h3><p>Taxis, bags, overcharging &mdash; full list</p></div>
+      <div class="tips-topic-card" onclick="openChat('What are the best airlines to fly to Vietnam from the UK? Which airline do you recommend and why? International and budget options.')"><div class="ttc-icon">&#9992;</div><h3>Best airlines</h3><p>Vietnam Airlines, VietJet, Qatar, Singapore</p></div>
+      <div class="tips-topic-card" onclick="openChat('How do I stay safe in Vietnamese traffic? Tips for crossing the street with all the motorbikes. What should I know before I arrive?')"><div class="ttc-icon">&#128757;</div><h3>Traffic safety</h3><p>Motorbikes everywhere &mdash; how to cross safely</p></div>
+    </div>
+    <div class="sec-label" style="margin-top:24px;">&#127836; Food &amp; diet</div>
+    <div class="tips-grid">
+      <div class="tips-topic-card" onclick="openChat('What are the absolute must-try foods in Vietnam? Give me the top 10 dishes I cannot leave Vietnam without eating, with descriptions.')"><div class="ttc-icon">&#127836;</div><h3>Must-try dishes</h3><p>Pho, Banh Mi, Cao Lau, Bun Bo Hue and more</p></div>
+      <div class="tips-topic-card" onclick="openChat('What vegetarian food is available in Vietnam? Where can I find it, what should I order, and what ingredients should I watch out for?')"><div class="ttc-icon">&#129367;</div><h3>Vegetarian</h3><p>Chay restaurants, Buddhist food, phrases</p></div>
+      <div class="tips-topic-card" onclick="openChat('Is vegan food available in Vietnam? Where can I find it in major cities and what hidden ingredients should I be aware of?')"><div class="ttc-icon">&#127807;</div><h3>Vegan</h3><p>Growing scene &mdash; where to find it</p></div>
+      <div class="tips-topic-card" onclick="openChat('Where can I find halal food in Vietnam? Which cities have the best halal options and how do I find halal certified restaurants?')"><div class="ttc-icon">&#127769;</div><h3>Halal food</h3><p>HCMC and Hanoi have the best options</p></div>
+      <div class="tips-topic-card" onclick="openChat('Is street food safe to eat in Vietnam? How do I pick safe stalls and what should I avoid to prevent getting sick?')"><div class="ttc-icon">&#127982;</div><h3>Street food safety</h3><p>Busy stalls are safe &mdash; what to look for</p></div>
+      <div class="tips-topic-card" onclick="openChat('What food is completely unique to Hoi An that I can only get there? Tell me about Cao Lau, White Rose dumplings and other local specialities.')"><div class="ttc-icon">&#129361;</div><h3>Hoi An specialties</h3><p>Cao Lau and White Rose &mdash; only here</p></div>
+    </div>
+    <div class="sec-label" style="margin-top:24px;">&#128176; Money &amp; practicalities</div>
+    <div class="tips-grid">
+      <div class="tips-topic-card" onclick="openChat('How does money work in Vietnam? Tell me about the currency, best exchange rates, ATM tips, and whether to use cash or card.')"><div class="ttc-icon">&#128180;</div><h3>Currency &amp; ATMs</h3><p>VND, best exchange spots, cash vs card</p></div>
+      <div class="tips-topic-card" onclick="openChat('What is the daily travel budget for Vietnam? Give me budget, mid-range, and luxury breakdowns with example costs.')"><div class="ttc-icon">&#128176;</div><h3>Daily budget</h3><p>Budget, mid-range, and luxury costs</p></div>
+      <div class="tips-topic-card" onclick="openChat('How do I get a SIM card in Vietnam? Which network is best, where to buy, how much does it cost, and what do I need?')"><div class="ttc-icon">&#128241;</div><h3>SIM cards</h3><p>Buy at airport &mdash; Viettel or Mobifone</p></div>
+      <div class="tips-topic-card" onclick="openChat('What apps should I download before going to Vietnam? Give me the essential apps and why I need each one.')"><div class="ttc-icon">&#128242;</div><h3>Essential apps</h3><p>Grab, Google Maps, Translate, XE Currency</p></div>
+      <div class="tips-topic-card" onclick="openChat('What vaccinations do I need before visiting Vietnam? What does my GP recommend and what travel health precautions should I take?')"><div class="ttc-icon">&#128137;</div><h3>Vaccinations</h3><p>Hep A, Typhoid, and what your GP will say</p></div>
+      <div class="tips-topic-card" onclick="openChat('What should I pack for Vietnam? Give me a complete packing list including clothes, medicines, electronics, and documents.')"><div class="ttc-icon">&#127904;</div><h3>What to pack</h3><p>Climate, temples, rain, mosquitoes &mdash; all covered</p></div>
+    </div>
+  </div>
+  <div class="footer">VietGuide &copy; 2025 &middot; Vietnam Travel Intelligence</div>
+</div>
+
+<!-- TRANSPORT PAGE -->
+<div class="page" id="page-transport">
+  <div class="page-header"><div class="badge">Getting Around</div><h2>Transport in Vietnam</h2><p>Select two cities to compare all transport options &mdash; real prices, journey times, and direct booking links.</p></div>
+  <div class="transport-planner">
+    <div class="planner-title">&#128506; Journey planner &mdash; compare all options instantly</div>
+    <div class="planner-row">
+      <div class="planner-field"><label>From</label>
+        <select id="tp-from" onchange="updateTransportRoute()">
+          <option value="">Select city</option><option value="hanoi">Hanoi</option><option value="hcmc">Ho Chi Minh City</option>
+          <option value="danang">Da Nang</option><option value="hoian">Hoi An</option><option value="hue">Hue</option>
+          <option value="nhatrang">Nha Trang</option><option value="phuquoc">Phu Quoc</option><option value="halong">Halong Bay</option>
+        </select>
+      </div>
+      <div class="planner-swap" onclick="swapTransportCities()">&#8652;</div>
+      <div class="planner-field"><label>To</label>
+        <select id="tp-to" onchange="updateTransportRoute()">
+          <option value="">Select city</option><option value="hanoi">Hanoi</option><option value="hcmc">Ho Chi Minh City</option>
+          <option value="danang">Da Nang</option><option value="hoian">Hoi An</option><option value="hue">Hue</option>
+          <option value="nhatrang">Nha Trang</option><option value="phuquoc">Phu Quoc</option><option value="halong">Halong Bay</option>
+        </select>
+      </div>
+    </div>
+    <div class="transport-results" id="transport-results"><div class="transport-placeholder">Select two cities above to compare flights, trains, buses and more.</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-label">All transport options &mdash; tap any card to book directly</div>
+    <div class="grid3">
+      <div class="transport-card" onclick="window.open('https://grab.com','_blank')"><div class="transport-icon">&#128241;</div><h3>Grab</h3><p>Vietnam&rsquo;s essential app. Fixed-price rides, no haggling, fully tracked. Safest option for tourists by far.</p><ul class="transport-steps"><li>Download Grab before you arrive</li><li>GrabBike is cheapest, GrabCar is comfortable</li><li>Works in all major cities</li></ul><span class="tag tag-green">Always recommended &rarr;</span></div>
+      <div class="transport-card" onclick="window.open('https://dsvn.vn','_blank')"><div class="transport-icon">&#128646;</div><h3>Vietnam Railways</h3><p>Reunification Express &mdash; the legendary train from Hanoi to HCMC through the length of Vietnam.</p><ul class="transport-steps"><li>Book at dsvn.vn or Baolau</li><li>Soft sleeper class recommended</li><li>Spectacular coastal scenery</li></ul><span class="tag tag-blue">Tap to book &rarr;</span></div>
+      <div class="transport-card" onclick="window.open('https://vexere.com','_blank')"><div class="transport-icon">&#128652;</div><h3>Sleeper buses</h3><p>Cheap overnight buses with lie-flat seats. Great for budget travellers covering long routes.</p><ul class="transport-steps"><li>Book via Vexere.com</li><li>Arrive 15 mins early</li><li>Bring earplugs and a neck pillow</li></ul><span class="tag">Tap to book &rarr;</span></div>
+      <div class="transport-card" onclick="window.open('https://www.vietjetair.com','_blank')"><div class="transport-icon">&#9992;</div><h3>VietJet Air</h3><p>Vietnam&rsquo;s budget airline. Hanoi to HCMC from &pound;25 and takes just 2 hours. Extensive domestic network.</p><ul class="transport-steps"><li>Cheapest domestic fares</li><li>Watch out for baggage fees</li><li>Book early for best prices</li></ul><span class="tag tag-blue">Tap to book &rarr;</span></div>
+      <div class="transport-card" onclick="window.open('https://www.vietnamairlines.com','_blank')"><div class="transport-icon">&#128745;</div><h3>Vietnam Airlines</h3><p>National carrier &mdash; most reliable for domestic and long-haul international. Baggage usually included.</p><ul class="transport-steps"><li>Best for international connections</li><li>Full service, reliable schedule</li><li>Direct London Heathrow to Hanoi</li></ul><span class="tag tag-green">Tap to book &rarr;</span></div>
+      <div class="transport-card" onclick="window.open('https://www.bambooairways.com','_blank')"><div class="transport-icon">&#127787;</div><h3>Bamboo Airways</h3><p>Mid-range airline with direct European routes. Good value with baggage usually included in fare.</p><ul class="transport-steps"><li>Good EU direct connections</li><li>Reliable modern fleet</li><li>Good value business class</li></ul><span class="tag">Tap to book &rarr;</span></div>
+    </div>
+  </div>
+  <div class="footer">VietGuide &copy; 2025 &middot; Vietnam Travel Intelligence</div>
+</div>
+
+<!-- VISAS PAGE -->
+<div class="page" id="page-visas">
+  <div class="page-header"><div class="badge">Entry Requirements</div><h2>Vietnam visa guide</h2><p>Search your nationality below. 50+ countries covered and updated for 2025.</p></div>
+  <div class="sec">
+    <div class="visa-search-wrap"><span class="search-icon">&#128269;</span><input class="visa-search" type="text" id="visa-search" placeholder="Search your country e.g. United Kingdom, India, Australia..." oninput="filterVisas(this.value)"/></div>
+    <div class="grid3" style="margin-bottom:28px;">
+      <div class="icard"><div class="icard-icon">&#9989;</div><h3>Visa-free entry</h3><p>Some nationalities get 14&ndash;45 days with no visa needed. Show your passport at immigration on arrival &mdash; no paperwork required.</p><span class="tag tag-green">No cost, no application</span></div>
+      <div class="icard"><div class="icard-icon">&#127760;</div><h3>E-visa online</h3><p>Apply online at evisa.xuatnhapcanh.gov.vn (official only). Takes 3 working days, costs ~&pound;20. Valid up to 90 days, single or multiple entry.</p><span class="tag tag-blue">&sim;&pound;20 &middot; Official site only</span></div>
+      <div class="icard"><div class="icard-icon">&#128196;</div><h3>Visa on arrival</h3><p>Requires a pre-approval letter and cash payment at the airport. Available for air travel only. Less convenient than the e-visa.</p><span class="tag">Air entry only</span></div>
+    </div>
+    <div class="sec-label">Visa status by nationality <span id="visa-count" style="font-weight:400;text-transform:none;font-size:11px;"></span></div>
+    <div class="countries-list" id="visa-list"></div>
+    <div class="sec-label" style="margin-top:28px;">How to apply for a Vietnam e-visa &mdash; step by step</div>
+    <div class="tips-list">
+      <div class="tip-item"><div class="tip-num">1</div><div><h3>Use the official government site only</h3><p>Go to <a href="https://evisa.xuatnhapcanh.gov.vn" target="_blank" style="color:var(--gold);font-weight:600;">evisa.xuatnhapcanh.gov.vn</a> &mdash; avoid any third-party sites that charge extra fees for the exact same process.</p></div></div>
+      <div class="tip-item"><div class="tip-num">2</div><div><h3>Upload your documents</h3><p>You need a passport-style photo on a white background, plus a clear scan of your passport bio page. Have your travel dates and intended border crossing ready before you start.</p></div></div>
+      <div class="tip-item"><div class="tip-num">3</div><div><h3>Pay approximately &pound;20 by card</h3><p>Payment is made online by credit or debit card. Save your application reference number &mdash; you will need it to check the status of your application.</p></div></div>
+      <div class="tip-item"><div class="tip-num">4</div><div><h3>Wait 3 working days, then print it out</h3><p>Download your approved e-visa as a PDF and print it. You must present the printed e-visa alongside your physical passport at immigration on arrival.</p></div></div>
+    </div>
+  </div>
+  <div class="footer">VietGuide &copy; 2025 &middot; Vietnam Travel Intelligence</div>
+</div>
+
+</div><!-- end .app -->
+
+<!-- FULL PAGE PLACE DETAIL OVERLAY -->
+<div class="full-overlay" id="full-place-overlay" onclick="closeFPO(event)">
+  <div class="full-overlay-card" id="fpo-card">
+    <div class="full-overlay-hero">
+      <button class="full-overlay-close" onclick="closeFPO()">&#10005; Close</button>
+      <div class="full-overlay-icon" id="fpo-icon"></div>
+      <div class="full-overlay-title" id="fpo-title"></div>
+      <div class="full-overlay-cat" id="fpo-cat"></div>
+    </div>
+    <div class="full-overlay-body">
+      <div class="full-overlay-info">
+        <h4>About this place</h4>
+        <p class="full-overlay-desc" id="fpo-desc"></p>
+      </div>
+      <div class="full-overlay-info">
+        <h4>Tips for visitors</h4>
+        <p id="fpo-tips"></p>
+      </div>
+      <div class="full-overlay-coords" id="fpo-coords"></div>
+      <div class="full-overlay-actions">
+        <button class="btn-primary" onclick="closeFPO();askAIAboutPlace()">&#129302; Ask AI about this place</button>
+        <button style="background:var(--cream);color:var(--text);border:0.5px solid var(--border);padding:13px 22px;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;" onclick="closeFPO();setAsDestination()">Set as destination</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI BUBBLE CHAT -->
+<div class="ai-bubble-btn" onclick="toggleChat()">
+  <span class="ai-bubble-icon">&#129302;</span>
+  <span>Ask VietGuide AI</span>
+  <span class="ai-notif" id="ai-notif" style="display:none;">1</span>
+</div>
+<div class="ai-chat-window" id="ai-chat-window">
+  <div class="ai-chat-header">
+    <div class="ai-chat-title">
+      <div class="ai-chat-avatar">&#129302;</div>
+      <div><div class="ai-chat-name">VietGuide AI</div><div class="ai-chat-status">Vietnam travel specialist</div></div>
+    </div>
+    <button class="ai-chat-close" onclick="toggleChat()">&#10005;</button>
+  </div>
+  <div class="ai-chat-context" id="ai-chat-context" style="display:none;"><span id="ai-context-text"></span></div>
+  <div class="ai-chat-messages" id="ai-messages">
+    <div class="ai-msg ai-msg-bot">
+      <div class="ai-bubble-msg">Hi! I&rsquo;m VietGuide AI &mdash; your Vietnam travel specialist. Ask me anything: visas, food, transport, culture, safety, itineraries, money, and more. I&rsquo;ll give you a detailed answer instantly.</div>
+      <div class="ai-qr">
+        <button onclick="sendAI('Do I need a visa for Vietnam?')">Do I need a visa?</button>
+        <button onclick="sendAI('What must-try food is there in Vietnam?')">Must-try food</button>
+        <button onclick="sendAI('Create me a 7 day Vietnam itinerary')">7-day itinerary</button>
+        <button onclick="sendAI('Is Vietnam safe for tourists?')">Safety tips</button>
+      </div>
+    </div>
+  </div>
+  <div class="ai-chat-input-row">
+    <input type="text" id="ai-input" placeholder="Ask anything about Vietnam..."/>
+    <button onclick="sendAIFromInput()">&#10148;</button>
+  </div>
+</div>
+
+
+
+
+<script>
+// Full place detail overlay
+function openFullPlaceDetail() {
+  if (!currentPlace) return;
+  document.getElementById("fpo-icon").textContent = currentPlace.icon;
+  document.getElementById("fpo-title").textContent = currentPlace.name;
+  document.getElementById("fpo-cat").textContent = catLabels[currentPlace.cat];
+  document.getElementById("fpo-desc").textContent = currentPlace.desc;
+  document.getElementById("fpo-coords").textContent = currentPlace.lat.toFixed(6) + "\u00b0N, " + currentPlace.lng.toFixed(6) + "\u00b0E";
+  // Generate tips based on category
+  var tips = {
+    airport: "Always use Grab to get from the airport into the city — it\'s cheaper and safer than unofficial taxis. Download the Grab app before you land. You can buy a local SIM card at most major airports immediately after arrivals.",
+    landmark: "Visit early in the morning to avoid crowds and get better photos. Check opening times before you go as many sites close on certain days. Dress modestly if visiting a religious site — cover shoulders and knees.",
+    food: "Go at lunch or dinner time when food is freshest and the stall is busiest. High turnover means better food and safer eating. Point at what looks good if you can\'t read the menu — Google Translate camera works well."
+  };
+  document.getElementById("fpo-tips").textContent = tips[currentPlace.cat] || "Check Google Maps reviews before visiting. Go early to avoid crowds. Ask your hotel or guesthouse for the latest tips — advice from locals is always most current.";
+  document.getElementById("full-place-overlay").classList.add("open");
+  closeInfo();
+}
+
+function closeFPO(e) {
+  if (!e || e.target === document.getElementById("full-place-overlay")) {
+    document.getElementById("full-place-overlay").classList.remove("open");
+  }
+}
+</script>
+<script>
+// ── API KEYS ─────────────────────────────────────────────────
+// Backend dev: swap these out or proxy through your Java server
+const GOOGLE_MAPS_KEY = 'AIzaSyBgS_3JQyxQ3aP_piX78fyTJHxmUh5Aj70';
+const WEATHER_KEY     = 'e2218f62be2b8982bc6f91c72930c084';
+
+// Java backend endpoint for AI (POST /api/chat)
+// Once this is live, the AI switches from local knowledge base to real Claude
+const AI_ENDPOINT = '/api/chat';
+
+
+// ── VIETGUIDE FULL LANGUAGE SYSTEM ───────────────────────────
+// Translates every visible text element on every page
+// Uses data-i18n keys stored on elements for clean lookups
+
+const LANG_META = {
+  EN: { flag:'🇬🇧', label:'English'    },
+  VI: { flag:'🇻🇳', label:'Tiếng Việt'  },
+  ZH: { flag:'🇨🇳', label:'中文'        },
+  KO: { flag:'🇰🇷', label:'한국어'       },
+  JA: { flag:'🇯🇵', label:'日本語'       },
+  FR: { flag:'🇫🇷', label:'Français'    },
+  DE: { flag:'🇩🇪', label:'Deutsch'     },
+  ES: { flag:'🇪🇸', label:'Español'     },
+  TH: { flag:'🇹🇭', label:'ภาษาไทย'     },
+  RU: { flag:'🇷🇺', label:'Русский'     },
+  IT: { flag:'🇮🇹', label:'Italiano'    },
+};
+const LANG_ORDER = ['EN','VI','ZH','KO','JA','FR','DE','ES','TH','RU','IT'];
+
+// Full translation table — [EN, VI, ZH, KO, JA, FR, DE, ES, TH, RU, IT]
+const TR = {
+  // NAV
+  nav_home:         ['Home','Trang chủ','首页','홈','ホーム','Accueil','Startseite','Inicio','หน้าหลัก','Главная','Home'],
+  nav_explore:      ['Explore','Khám phá','探索','탐색','探索','Explorer','Erkunden','Explorar','สำรวจ','Исследовать','Esplora'],
+  nav_tips:         ['Travel Tips','Mẹo du lịch','旅行贴士','여행 팁','旅行のヒント','Conseils','Reisetipps','Consejos','เคล็ดลับ','Советы','Consigli'],
+  nav_transport:    ['Transport','Giao thông','交通','교통','交通','Transport','Transport','Transporte','การเดินทาง','Транспорт','Trasporti'],
+  nav_visas:        ['Visas','Thị thực','签证','비자','ビザ','Visas','Visa','Visados','วีซ่า','Визы','Visti'],
+  // HERO
+  hero_h1:          ['Your Vietnam trip, <span class="accent">expertly guided.</span>','Chuyến đi Việt Nam, <span class="accent">được hướng dẫn chuyên nghiệp.</span>','您的越南之旅，<span class="accent">专业指导。</span>','베트남 여행, <span class="accent">전문적인 안내.</span>','ベトナム旅行、<span class="accent">専門的なガイド。</span>','Votre voyage au Vietnam, <span class="accent">guidé par des experts.</span>','Ihre Vietnam-Reise, <span class="accent">professionell begleitet.</span>','Tu viaje a Vietnam, <span class="accent">guiado por expertos.</span>','ทริปเวียดนาม, <span class="accent">แนะนำอย่างมืออาชีพ</span>','Ваша поездка во Вьетнам, <span class="accent">под экспертным руководством.</span>','Il tuo viaggio in Vietnam, <span class="accent">guidato da esperti.</span>'],
+  hero_sub:         ['AI-powered travel intelligence built exclusively for Vietnam. Maps, visas, transport, food, culture — all in one place.','Trợ lý AI duy nhất được xây dựng riêng cho du lịch Việt Nam. Bản đồ, thị thực, giao thông, ẩm thực, văn hóa — tất cả trong một nơi.','唯一专为越南旅行打造的AI助手。地图、签证、交通、美食、文化——尽在一处。','베트남 여행만을 위해 만들어진 유일한 AI 어시스턴트. 지도, 비자, 교통, 음식, 문화 — 한 곳에서.','ベトナム旅行専用のAIアシスタント。地図、ビザ、交通、食べ物、文化 — すべて一か所に。','Le seul assistant IA conçu pour le Vietnam. Cartes, visas, transport, cuisine, culture — tout en un.','Der einzige KI-Assistent für Vietnam-Reisen. Karten, Visa, Transport, Essen, Kultur — alles an einem Ort.','El único asistente de IA para Vietnam. Mapas, visados, transporte, comida, cultura — todo en un lugar.','ผู้ช่วย AI สำหรับการท่องเที่ยวเวียดนาม แผนที่ วีซ่า การเดินทาง อาหาร วัฒนธรรม — ทุกอย่างในที่เดียว','ИИ-помощник для путешествий по Вьетнаму. Карты, визы, транспорт, еда, культура — всё в одном месте.','L\'unico AI per i viaggi in Vietnam. Mappe, visti, trasporti, cibo, cultura — tutto in un posto.'],
+  btn_plan:         ['Plan my trip with AI →','Lên kế hoạch với AI →','用AI规划我的旅行 →','AI로 여행 계획하기 →','AIで旅行を計画する →','Planifier mon voyage →','Reise mit KI planen →','Planificar mi viaje →','วางแผนกับ AI →','Спланировать поездку →','Pianifica il viaggio →'],
+  btn_explore_map:  ['Explore the map','Khám phá bản đồ','探索地图','지도 탐색','地図を探索','Explorer la carte','Karte erkunden','Explorar el mapa','สำรวจแผนที่','Исследовать карту','Esplora la mappa'],
+  stat1_lbl:        ['Mapped locations','Địa điểm đã lập bản đồ','地图位置','지도 위치','地図位置','Lieux cartographiés','Kartierte Orte','Lugares en el mapa','สถานที่ในแผนที่','Картированные места','Luoghi mappati'],
+  stat2_lbl:        ['Countries, visa info','Quốc gia, thị thực','国家，签证信息','국가, 비자 정보','国とビザ情報','Pays, infos visas','Länder, Visainfos','Países, info visados','ประเทศ ข้อมูลวีซ่า','Страны, визовая информация','Paesi, info visti'],
+  stat3_lbl:        ['Languages','Ngôn ngữ','语言','언어','言語','Langues','Sprachen','Idiomas','ภาษา','Языки','Lingue'],
+  stat4_lbl:        ['AI questions answered','Câu hỏi AI','AI问题已解答','AI 질문','AI の質問','Questions AI','KI-Fragen','Preguntas de IA','คำถาม AI','Вопросы ИИ','Domande AI'],
+  // WHY SECTION
+  why_eyebrow:      ['Why VietGuide','Tại sao VietGuide','为什么选择VietGuide','왜 VietGuide인가','なぜVietGuideか','Pourquoi VietGuide','Warum VietGuide','Por qué VietGuide','ทำไมต้อง VietGuide','Почему VietGuide','Perché VietGuide'],
+  why_title:        ['Generic AI doesn\'t know Vietnam.','AI thông thường không biết Việt Nam.','普通AI不了解越南。','일반 AI는 베트남을 모릅니다.','一般的なAIはベトナムを知りません。','L\'IA générique ne connaît pas le Vietnam.','Generische KI kennt Vietnam nicht.','La IA genérica no conoce Vietnam.','AI ทั่วไปไม่รู้จักเวียดนาม','Обычный ИИ не знает Вьетнам.','L\'IA generica non conosce il Vietnam.'],
+  why_sub:          ['We built something that does. Here\'s the difference.','Chúng tôi đã xây dựng thứ gì đó có thể làm được điều đó. Đây là sự khác biệt.','我们打造了能做到的工具。这就是区别。','우리는 그것을 할 수 있는 것을 만들었습니다. 차이가 있습니다.','私たちはそれができるものを作りました。これが違いです。','Nous avons créé quelque chose qui le fait. Voici la différence.','Wir haben etwas gebaut, das es kann. Hier ist der Unterschied.','Construimos algo que sí lo sabe. Aquí está la diferencia.','เราสร้างสิ่งที่ทำได้ นี่คือความแตกต่าง','Мы создали то, что умеет. Вот разница.','Abbiamo costruito qualcosa che lo sa. Ecco la differenza.'],
+  // FEATURES
+  feats_eyebrow:    ['What\'s inside','Nội dung','功能特点','기능 소개','機能について','Fonctionnalités','Funktionen','Características','ฟีเจอร์','Возможности','Caratteristiche'],
+  feats_title:      ['Everything a traveller needs.','Mọi thứ bạn cần.','旅行者所需的一切。','여행자에게 필요한 모든 것.','旅行者に必要なすべて。','Tout ce dont un voyageur a besoin.','Alles, was ein Reisender braucht.','Todo lo que necesita un viajero.','ทุกสิ่งที่นักเดินทางต้องการ','Всё, что нужно путешественнику.','Tutto ciò di cui un viaggiatore ha bisogno.'],
+  feat1_title:      ['Interactive map','Bản đồ tương tác','互动地图','인터랙티브 지도','インタラクティブマップ','Carte interactive','Interaktive Karte','Mapa interactivo','แผนที่อินเทอร์แอคทีฟ','Интерактивная карта','Mappa interattiva'],
+  feat1_desc:       ['Explore by city. Airports, landmarks, food spots — all pinpointed with real GPS coordinates.','Khám phá theo thành phố. Sân bay, danh lam, điểm ẩm thực — tất cả được định vị với tọa độ GPS thực.','按城市探索。机场、地标、美食点——全部标注真实GPS坐标。','도시별로 탐색하세요. 공항, 랜드마크, 음식점 — 실제 GPS 좌표로 모두 표시됩니다.','都市別に探索。空港、ランドマーク、グルメスポット — すべて実際のGPS座標で表示。','Explorez par ville. Aéroports, sites, restaurants — tous localisés avec des coordonnées GPS réelles.','Erkunden Sie nach Stadt. Flughäfen, Sehenswürdigkeiten, Restaurants — alle mit echten GPS-Koordinaten.','Explora por ciudad. Aeropuertos, lugares, restaurantes — todos ubicados con coordenadas GPS reales.','สำรวจตามเมือง สนามบิน สถานที่ท่องเที่ยว ร้านอาหาร — ทั้งหมดระบุด้วยพิกัด GPS จริง','Исследуйте по городам. Аэропорты, достопримечательности, рестораны — все с реальными GPS-координатами.','Esplora per città. Aeroporti, luoghi, ristoranti — tutti indicati con coordinate GPS reali.'],
+  feat2_title:      ['Route planner','Kế hoạch tuyến đường','路线规划','경로 계획','ルート計画','Planificateur d\'itinéraire','Routenplaner','Planificador de rutas','วางแผนเส้นทาง','Планировщик маршрута','Pianificatore percorso'],
+  feat2_desc:       ['Pick two locations. See all transport options — price, time, one-click booking.','Chọn hai địa điểm. Xem tất cả các tùy chọn giao thông — giá cả, thời gian, đặt vé một cú nhấp.','选择两个地点。查看所有交通选项——价格、时间、一键预订。','두 장소를 선택하세요. 모든 교통 옵션 — 가격, 시간, 원클릭 예약.','2か所を選択。すべての交通手段 — 価格、時間、ワンクリック予約。','Choisissez deux lieux. Voir toutes les options — prix, durée, réservation en un clic.','Wählen Sie zwei Orte. Alle Transportoptionen — Preis, Zeit, Ein-Klick-Buchung.','Elija dos lugares. Ver todas las opciones — precio, tiempo, reserva con un clic.','เลือกสองสถานที่ ดูตัวเลือกการเดินทางทั้งหมด — ราคา เวลา จองด้วยคลิกเดียว','Выберите два места. Все варианты транспорта — цена, время, бронирование в один клик.','Scegli due luoghi. Tutte le opzioni di trasporto — prezzo, tempo, prenotazione in un clic.'],
+  feat3_title:      ['Visa guide','Hướng dẫn thị thực','签证指南','비자 안내','ビザガイド','Guide des visas','Visa-Guide','Guía de visados','คู่มือวีซ่า','Руководство по визам','Guida visti'],
+  feat4_title:      ['Culture & tips','Văn hóa & mẹo','文化与技巧','문화 & 팁','文化とヒント','Culture & conseils','Kultur & Tipps','Cultura y consejos','วัฒนธรรมและเคล็ดลับ','Культура и советы','Cultura e consigli'],
+  feat5_title:      ['Food guide','Hướng dẫn ẩm thực','美食指南','음식 가이드','グルメガイド','Guide gastronomique','Gastronomieführer','Guía gastronómica','คู่มืออาหาร','Гастрономический гид','Guida gastronomica'],
+  feat6_title:      ['AI itineraries','Lịch trình AI','AI行程','AI 일정','AI旅程','Itinéraires IA','KI-Reisepläne','Itinerarios IA','แผนการเดินทาง AI','ИИ-маршруты','Itinerari AI'],
+  // QUOTE + CTA
+  big_quote:        ['Finally — a travel tool that actually knows Vietnam, not just about it.','Cuối cùng — một công cụ du lịch thực sự hiểu Việt Nam, không chỉ biết về nó.','终于——一个真正了解越南的旅行工具，而不仅仅是关于它。','드디어 — 베트남에 대해 그저 아는 것이 아니라 실제로 아는 여행 도구.','ついに — ベトナムについて知っているだけでなく、実際に知っている旅行ツール。','Enfin — un outil de voyage qui connaît vraiment le Vietnam, pas seulement à son sujet.','Endlich — ein Reise-Tool, das Vietnam wirklich kennt, nicht nur darüber.','Por fin — una herramienta de viaje que realmente conoce Vietnam, no solo sobre él.','ในที่สุด — เครื่องมือท่องเที่ยวที่รู้จักเวียดนามจริงๆ','Наконец — инструмент, который действительно знает Вьетнам.','Finalmente — uno strumento di viaggio che conosce davvero il Vietnam.'],
+  quote_attr:       ['Built for first-time visitors and frequent travellers alike','Được xây dựng cho cả khách du lịch lần đầu và khách thường xuyên','专为首次游客和常旅客打造','처음 방문자와 자주 여행하는 사람 모두를 위해 만들어졌습니다','初めての方もリピーターも向けに作られています','Conçu pour les premiers visiteurs comme pour les voyageurs fréquents','Für Erstbesucher und Vielreisende gleichermaßen','Diseñado para visitantes por primera vez y viajeros frecuentes','สร้างขึ้นสำหรับทั้งผู้มาเยือนครั้งแรกและนักเดินทางบ่อย','Создано как для первых посетителей, так и для частых путешественников','Costruito per i primi visitatori e i viaggiatori abituali'],
+  cta_title:        ['Ready to explore Vietnam?','Sẵn sàng khám phá Việt Nam?','准备好探索越南了吗？','베트남을 탐험할 준비가 되셨나요?','ベトナムを探索する準備はできましたか？','Prêt à explorer le Vietnam ?','Bereit, Vietnam zu erkunden?','¿Listo para explorar Vietnam?','พร้อมสำรวจเวียดนามแล้วหรือ?','Готовы исследовать Вьетнам?','Pronto ad esplorare il Vietnam?'],
+  cta_sub:          ['Free to use. No sign-up. Ask anything.','Miễn phí. Không cần đăng ký. Hỏi bất cứ điều gì.','免费使用。无需注册。随便问。','무료 사용. 가입 불필요. 무엇이든 물어보세요.','無料でご利用いただけます。登録不要。何でも聞いてください。','Gratuit. Sans inscription. Posez n\'importe quelle question.','Kostenlos. Keine Anmeldung. Stellen Sie beliebige Fragen.','Gratis. Sin registro. Pregunte lo que quiera.','ใช้ฟรี ไม่ต้องสมัคร ถามอะไรก็ได้','Бесплатно. Без регистрации. Спрашивайте что угодно.','Gratuito. Nessuna registrazione. Chiedi qualsiasi cosa.'],
+  cta_btn:          ['Start planning with AI →','Bắt đầu lên kế hoạch với AI →','开始用AI规划 →','AI로 계획 시작하기 →','AIで計画を始める →','Commencer à planifier →','Mit KI planen →','Empezar a planificar →','เริ่มวางแผนกับ AI →','Начать планирование →','Inizia a pianificare →'],
+  // MAP PAGE
+  map_badge:        ['Interactive Map','Bản đồ tương tác','互动地图','인터랙티브 지도','インタラクティブマップ','Carte Interactive','Interaktive Karte','Mapa Interactivo','แผนที่อินเทอร์แอคทีฟ','Интерактивная карта','Mappa Interattiva'],
+  map_h2:           ['Explore Vietnam','Khám phá Việt Nam','探索越南','베트남 탐색','ベトナムを探索','Explorer le Vietnam','Vietnam erkunden','Explorar Vietnam','สำรวจเวียดนาม','Исследовать Вьетнам','Esplora il Vietnam'],
+  map_p:            ['Select a city, then filter by airports, landmarks, or food spots. Click two pins to plan a route between them.','Chọn thành phố, sau đó lọc theo sân bay, danh lam hoặc điểm ẩm thực. Nhấp vào hai điểm ghim để lập kế hoạch tuyến đường.','选择城市，然后按机场、地标或美食点筛选。单击两个图钉规划路线。','도시를 선택한 다음 공항, 명소 또는 음식점으로 필터링하세요. 두 핀을 클릭하여 경로를 계획하세요.','都市を選択し、空港、ランドマーク、グルメスポットでフィルタリング。2つのピンをクリックしてルートを計画。','Sélectionnez une ville, filtrez par aéroports, sites ou restaurants. Cliquez sur deux épingles pour planifier un itinéraire.','Wählen Sie eine Stadt, filtern Sie nach Flughäfen, Sehenswürdigkeiten oder Restaurants. Klicken Sie auf zwei Pins, um eine Route zu planen.','Selecciona una ciudad, filtra por aeropuertos, lugares o restaurantes. Haz clic en dos pines para planificar una ruta.','เลือกเมือง กรองตามสนามบิน สถานที่ท่องเที่ยว หรือร้านอาหาร คลิกสองพินเพื่อวางแผนเส้นทาง','Выберите город, фильтруйте по аэропортам, достопримечательностям или ресторанам. Нажмите два пина для планирования маршрута.','Seleziona una città, filtra per aeroporti, luoghi o ristoranti. Clicca su due pin per pianificare un percorso.'],
+  city_label:       ['Select city','Chọn thành phố','选择城市','도시 선택','都市を選択','Sélectionner une ville','Stadt auswählen','Seleccionar ciudad','เลือกเมือง','Выбрать город','Seleziona città'],
+  route_label_txt:  ['Route planner','Kế hoạch tuyến đường','路线规划','경로 계획','ルート計画','Planificateur','Routenplaner','Planificador','วางแผนเส้นทาง','Планировщик','Pianificatore'],
+  route_hint_txt:   ['Click any map pin to set start & destination','Nhấp vào điểm ghim để đặt điểm đầu và điểm đến','单击地图图钉设置起点和终点','지도 핀을 클릭하여 출발지와 목적지 설정','地図のピンをクリックして出発地と目的地を設定','Cliquez sur les épingles pour définir départ et arrivée','Klicken Sie auf Karten-Pins für Start und Ziel','Haz clic en los pines para establecer origen y destino','คลิกที่หมุดแผนที่เพื่อตั้งต้นทางและปลายทาง','Нажмите на пины карты для выбора начала и конца','Clicca sui pin per impostare partenza e destinazione'],
+  route_btn_txt:    ['Get route','Tìm tuyến đường','获取路线','경로 찾기','ルートを取得','Obtenir l\'itinéraire','Route berechnen','Obtener ruta','หาเส้นทาง','Маршрут','Ottieni percorso'],
+  route_clear_txt:  ['Clear','Xóa','清除','지우기','クリア','Effacer','Löschen','Limpiar','ล้าง','Очистить','Cancella'],
+  search_ph:        ['Search places...','Tìm kiếm địa điểm...','搜索地点...','장소 검색...','場所を検索...','Rechercher des lieux...','Orte suchen...','Buscar lugares...','ค้นหาสถานที่...','Поиск мест...','Cerca luoghi...'],
+  from_ph:          ['Start point...','Điểm xuất phát...','出发地...','출발지...','出発地...','Point de départ...','Startpunkt...','Punto de partida...','จุดเริ่มต้น...','Начальная точка...','Punto di partenza...'],
+  to_ph:            ['Destination...','Điểm đến...','目的地...','목적지...','目的地...','Destination...','Ziel...','Destino...','ปลายทาง...','Пункт назначения...','Destinazione...'],
+  // TIPS PAGE
+  tips_badge:       ['Essential Knowledge','Kiến thức thiết yếu','必备知识','필수 지식','必須知識','Connaissances Essentielles','Wesentliche Kenntnisse','Conocimiento Esencial','ความรู้จำเป็น','Необходимые знания','Conoscenze Essenziali'],
+  tips_h2:          ['Travel tips for Vietnam','Mẹo du lịch Việt Nam','越南旅行贴士','베트남 여행 팁','ベトナム旅行のヒント','Conseils de voyage Vietnam','Vietnam Reisetipps','Consejos de viaje Vietnam','เคล็ดลับท่องเที่ยวเวียดนาม','Советы по путешествию во Вьетнам','Consigli di viaggio Vietnam'],
+  tips_p:           ['Tap any card for an instant AI answer. All advice is Vietnam-specific and up to date.','Nhấp vào bất kỳ thẻ nào để nhận câu trả lời AI ngay lập tức. Tất cả lời khuyên đều dành riêng cho Việt Nam.','点击任何卡片获取即时AI解答。所有建议均针对越南且是最新的。','카드를 탭하면 즉시 AI 답변을 받을 수 있습니다. 모든 조언은 베트남 전용입니다.','カードをタップして即座にAI回答。すべてのアドバイスはベトナム専用です。','Appuyez sur n\'importe quelle carte pour une réponse IA instantanée. Tous les conseils sont spécifiques au Vietnam.','Karte antippen für sofortige KI-Antwort. Alle Ratschläge sind Vietnam-spezifisch.','Toca cualquier tarjeta para una respuesta IA instantánea. Todos los consejos son específicos de Vietnam.','แตะที่การ์ดใดก็ได้เพื่อรับคำตอบ AI ทันที คำแนะนำทั้งหมดเป็นข้อมูลเฉพาะเวียดนาม','Нажмите на карточку для мгновенного ответа ИИ. Все советы специфичны для Вьетнама.','Tocca qualsiasi scheda per una risposta AI istantanea. Tutti i consigli sono specifici per il Vietnam.'],
+  tips_ai_strong:   ['Every card opens a conversation with VietGuide AI','Mỗi thẻ mở cuộc trò chuyện với VietGuide AI','每张卡片都会打开与VietGuide AI的对话','모든 카드가 VietGuide AI와의 대화를 엽니다','すべてのカードがVietGuide AIとの会話を開きます','Chaque carte ouvre une conversation avec VietGuide AI','Jede Karte öffnet ein Gespräch mit VietGuide KI','Cada tarjeta abre una conversación con VietGuide AI','การ์ดทุกใบเปิดการสนทนากับ VietGuide AI','Каждая карточка открывает разговор с VietGuide AI','Ogni scheda apre una conversazione con VietGuide AI'],
+  // TRANSPORT PAGE
+  transport_badge:  ['Getting Around','Di chuyển','出行','이동 수단','移動','Se Déplacer','Fortbewegung','Desplazarse','การเดินทาง','Передвижение','Spostarsi'],
+  transport_h2:     ['Transport in Vietnam','Giao thông tại Việt Nam','越南交通','베트남 교통','ベトナムの交通','Transport au Vietnam','Transport in Vietnam','Transporte en Vietnam','การเดินทางในเวียดนาม','Транспорт во Вьетнаме','Trasporti in Vietnam'],
+  transport_p:      ['Select two cities to compare all transport options — real prices, journey times, and direct booking links.','Chọn hai thành phố để so sánh tất cả các tùy chọn giao thông — giá thực, thời gian hành trình và liên kết đặt vé trực tiếp.','选择两个城市比较所有交通选项——真实价格、旅行时间和直接预订链接。','두 도시를 선택하여 모든 교통 옵션을 비교하세요 — 실제 가격, 여행 시간, 직접 예약 링크.','2都市を選択してすべての交通手段を比較 — 実際の価格、所要時間、直接予約リンク。','Sélectionnez deux villes pour comparer toutes les options — prix réels, durées, liens de réservation directs.','Wählen Sie zwei Städte, um alle Transportoptionen zu vergleichen — echte Preise, Reisezeiten, direkte Buchungslinks.','Selecciona dos ciudades para comparar todas las opciones — precios reales, tiempos de viaje, enlaces de reserva directos.','เลือกสองเมืองเพื่อเปรียบเทียบตัวเลือกการเดินทางทั้งหมด — ราคาจริง เวลาเดินทาง ลิงก์จองตรง','Выберите два города для сравнения всех вариантов — реальные цены, время в пути, прямые ссылки для бронирования.','Seleziona due città per confrontare tutte le opzioni — prezzi reali, tempi di viaggio, link di prenotazione diretti.'],
+  planner_title:    ['Journey planner — compare all options instantly','Kế hoạch hành trình — so sánh tất cả ngay lập tức','行程规划——立即比较所有选项','여정 계획 — 모든 옵션 즉시 비교','旅程プランナー — すべての選択肢を即座に比較','Planificateur — comparez toutes les options instantanément','Reiseplaner — alle Optionen sofort vergleichen','Planificador — compare todas las opciones al instante','วางแผนการเดินทาง — เปรียบเทียบตัวเลือกทั้งหมดทันที','Планировщик — сравните все варианты мгновенно','Pianificatore — confronta tutte le opzioni istantaneamente'],
+  from_label:       ['From','Từ','从','출발','出発地','Depuis','Von','Desde','จาก','Из','Da'],
+  to_label:         ['To','Đến','到','도착','目的地','Vers','Nach','Hasta','ถึง','До','A'],
+  select_city:      ['Select city','Chọn thành phố','选择城市','도시 선택','都市を選択','Sélectionner une ville','Stadt auswählen','Seleccionar ciudad','เลือกเมือง','Выбрать город','Seleziona città'],
+  transport_ph:     ['Select two cities above to compare flights, trains, buses and more.','Chọn hai thành phố ở trên để so sánh chuyến bay, tàu hỏa, xe buýt và nhiều hơn nữa.','在上方选择两个城市比较航班、火车、巴士等。','위에서 두 도시를 선택하여 항공편, 기차, 버스 등을 비교하세요.','上の2都市を選択して、フライト、電車、バスなどを比較してください。','Sélectionnez deux villes ci-dessus pour comparer vols, trains, bus et plus.','Wählen Sie oben zwei Städte aus, um Flüge, Züge, Busse und mehr zu vergleichen.','Selecciona dos ciudades arriba para comparar vuelos, trenes, autobuses y más.','เลือกสองเมืองด้านบนเพื่อเปรียบเทียบเที่ยวบิน รถไฟ รถบัส และอื่นๆ','Выберите два города выше, чтобы сравнить рейсы, поезда, автобусы и многое другое.','Seleziona due città sopra per confrontare voli, treni, autobus e altro.'],
+  // VISA PAGE
+  visa_badge:       ['Entry Requirements','Yêu cầu nhập cảnh','入境要求','입국 요건','入国要件','Conditions d\'entrée','Einreisevoraussetzungen','Requisitos de entrada','เงื่อนไขการเข้าประเทศ','Условия въезда','Requisiti di ingresso'],
+  visa_h2:          ['Vietnam visa guide','Hướng dẫn thị thực Việt Nam','越南签证指南','베트남 비자 가이드','ベトナムビザガイド','Guide des visas Vietnam','Vietnam Visa-Guide','Guía de visados Vietnam','คู่มือวีซ่าเวียดนาม','Руководство по визам Вьетнама','Guida visti Vietnam'],
+  visa_p:           ['Search your nationality below. 50+ countries covered and updated for 2025.','Tìm kiếm quốc tịch của bạn bên dưới. Hơn 50 quốc gia được cập nhật cho năm 2025.','在下方搜索您的国籍。50多个国家已更新至2025年。','아래에서 국적을 검색하세요. 50개국 이상 2025년 기준으로 업데이트되었습니다.','下で国籍を検索してください。50か国以上が2025年に更新されています。','Recherchez votre nationalité ci-dessous. Plus de 50 pays couverts et mis à jour pour 2025.','Suchen Sie Ihre Nationalität unten. 50+ Länder für 2025 aktualisiert.','Busca tu nacionalidad a continuación. Más de 50 países cubiertos y actualizados para 2025.','ค้นหาสัญชาติของคุณด้านล่าง มีข้อมูลมากกว่า 50 ประเทศ อัปเดตสำหรับปี 2025','Найдите свою национальность ниже. Охвачено 50+ стран, обновлено на 2025 год.','Cerca la tua nazionalità qui sotto. Più di 50 paesi coperti e aggiornati per il 2025.'],
+  visa_search_ph:   ['Search your country e.g. United Kingdom, India, Australia...','Tìm kiếm quốc gia của bạn...','搜索您的国家...','국가 검색...','国を検索...','Rechercher votre pays...','Land suchen...','Buscar tu país...','ค้นหาประเทศของคุณ...','Поиск страны...','Cerca il tuo paese...'],
+  // AI
+  ai_name:          ['VietGuide AI','VietGuide AI','VietGuide AI','VietGuide AI','VietGuide AI','VietGuide AI','VietGuide KI','VietGuide AI','VietGuide AI','VietGuide ИИ','VietGuide AI'],
+  ai_status:        ['Vietnam travel specialist','Chuyên gia du lịch Việt Nam','越南旅行专家','베트남 여행 전문가','ベトナム旅行スペシャリスト','Spécialiste voyage Vietnam','Vietnam-Reisespezialist','Especialista en viajes Vietnam','ผู้เชี่ยวชาญการท่องเที่ยวเวียดนาม','Специалист по Вьетнаму','Specialista viaggi Vietnam'],
+  ai_ph:            ['Ask anything about Vietnam...','Hỏi bất cứ điều gì về Việt Nam...','询问任何关于越南的问题...','베트남에 대해 무엇이든 질문하세요...','ベトナムについて何でも聞いてください...','Posez n\'importe quelle question sur le Vietnam...','Stellen Sie Fragen zu Vietnam...','Pregunta cualquier cosa sobre Vietnam...','ถามอะไรก็ได้เกี่ยวกับเวียดนาม...','Спросите что угодно о Вьетнаме...','Chiedi qualsiasi cosa sul Vietnam...'],
+  ai_greeting:      [
+    'Hi! I\'m VietGuide AI — your Vietnam travel specialist. Ask me anything: visas, food, transport, culture, safety, itineraries, money, and more.',
+    'Xin chào! Tôi là VietGuide AI — chuyên gia du lịch Việt Nam của bạn. Hỏi tôi bất cứ điều gì: thị thực, ẩm thực, giao thông, văn hóa, an toàn, lịch trình, tiền tệ và nhiều hơn nữa.',
+    '您好！我是VietGuide AI——您的越南旅行专家。向我询问任何问题：签证、美食、交通、文化、安全、行程、金钱等等。',
+    '안녕하세요! 저는 VietGuide AI — 베트남 여행 전문가입니다. 비자, 음식, 교통, 문화, 안전, 일정, 돈 등 무엇이든 물어보세요.',
+    'こんにちは！私はVietGuide AI — ベトナム旅行のスペシャリストです。ビザ、食べ物、交通、文化、安全、旅程、お金など何でも聞いてください。',
+    'Bonjour ! Je suis VietGuide AI — votre spécialiste du voyage au Vietnam. Posez-moi n\'importe quelle question : visas, cuisine, transport, culture, sécurité, itinéraires, argent et plus encore.',
+    'Hallo! Ich bin VietGuide KI — Ihr Vietnam-Reisespezialist. Fragen Sie mich alles: Visa, Essen, Transport, Kultur, Sicherheit, Reisepläne, Geld und mehr.',
+    '¡Hola! Soy VietGuide AI — tu especialista en viajes a Vietnam. Pregúntame cualquier cosa: visados, comida, transporte, cultura, seguridad, itinerarios, dinero y más.',
+    'สวัสดี! ฉันคือ VietGuide AI — ผู้เชี่ยวชาญการท่องเที่ยวเวียดนาม ถามฉันได้เลย: วีซ่า อาหาร การเดินทาง วัฒนธรรม ความปลอดภัย แผนการเดินทาง เงิน และอื่นๆ',
+    'Привет! Я VietGuide ИИ — специалист по путешествиям во Вьетнам. Спрашивайте всё: визы, еда, транспорт, культура, безопасность, маршруты, деньги и многое другое.',
+    'Ciao! Sono VietGuide AI — il tuo specialista di viaggi in Vietnam. Chiedimi qualsiasi cosa: visti, cibo, trasporti, cultura, sicurezza, itinerari, denaro e altro ancora.'
+  ],
+  ai_btn1:          ['Do I need a visa?','Tôi có cần thị thực không?','我需要签证吗？','비자가 필요한가요?','ビザは必要ですか？','Ai-je besoin d\'un visa ?','Brauche ich ein Visum?','¿Necesito visa?','ต้องมีวีซ่าไหม?','Нужна ли мне виза?','Ho bisogno del visto?'],
+  ai_btn2:          ['Must-try food','Ẩm thực không thể bỏ qua','必尝美食','꼭 먹어야 할 음식','食べるべき料理','Plats incontournables','Muss-Probieren','Comida imprescindible','อาหารที่ต้องลอง','Обязательная еда','Cibo da provare'],
+  ai_btn3:          ['7-day itinerary','Lịch trình 7 ngày','7天行程','7일 일정','7日間の旅程','Itinéraire 7 jours','7-Tage-Reiseplan','Itinerario de 7 días','แผน 7 วัน','Маршрут на 7 дней','Itinerario di 7 giorni'],
+  ai_btn4:          ['Safety tips','Mẹo an toàn','安全提示','안전 팁','安全のヒント','Conseils de sécurité','Sicherheitstipps','Consejos de seguridad','เคล็ดลับความปลอดภัย','Советы по безопасности','Consigli di sicurezza'],
+};
+
+// Store originals on page load for EN reset
+let originals = {};
+let currentLangCode = 'EN';
+
+// Map of translation key -> how to find element(s) and what to set
+function getElementMap() {
+  return [
+    // NAV
+    { key:'nav_home',       el:()=>document.getElementById('nav-landing'), type:'html' },
+    { key:'nav_explore',    el:()=>document.getElementById('nav-map'), type:'html' },
+    { key:'nav_tips',       el:()=>document.getElementById('nav-tips'), type:'html' },
+    { key:'nav_transport',  el:()=>document.getElementById('nav-transport'), type:'html' },
+    { key:'nav_visas',      el:()=>document.getElementById('nav-visas'), type:'html' },
+    // HERO
+    { key:'hero_h1',        el:()=>document.querySelector('#page-landing h1'), type:'html' },
+    { key:'hero_sub',       el:()=>document.querySelector('.hero-sub'), type:'html' },
+    { key:'btn_plan',       el:()=>document.querySelector('.hero-btns .btn-primary'), type:'text' },
+    { key:'btn_explore_map',el:()=>document.querySelector('.hero-btns .btn-ghost'), type:'text' },
+    { key:'stat1_lbl',      el:()=>document.querySelectorAll('.stat-lbl')[0], type:'text' },
+    { key:'stat2_lbl',      el:()=>document.querySelectorAll('.stat-lbl')[1], type:'text' },
+    { key:'stat3_lbl',      el:()=>document.querySelectorAll('.stat-lbl')[2], type:'text' },
+    { key:'stat4_lbl',      el:()=>document.querySelectorAll('.stat-lbl')[3], type:'text' },
+    // WHY
+    { key:'why_eyebrow',    el:()=>document.querySelector('.why-section .section-eyebrow'), type:'text' },
+    { key:'why_title',      el:()=>document.querySelector('.why-section .section-title'), type:'text' },
+    { key:'why_sub',        el:()=>document.querySelector('.why-section .section-sub'), type:'text' },
+    // FEATURES
+    { key:'feats_eyebrow',  el:()=>document.querySelector('.features-section .section-eyebrow'), type:'text' },
+    { key:'feats_title',    el:()=>document.querySelector('.features-section .section-title'), type:'html' },
+    { key:'feat1_title',    el:()=>document.querySelectorAll('.feat-card h3')[0], type:'text' },
+    { key:'feat1_desc',     el:()=>document.querySelectorAll('.feat-card p')[0], type:'text' },
+    { key:'feat2_title',    el:()=>document.querySelectorAll('.feat-card h3')[1], type:'text' },
+    { key:'feat2_desc',     el:()=>document.querySelectorAll('.feat-card p')[1], type:'text' },
+    { key:'feat3_title',    el:()=>document.querySelectorAll('.feat-card h3')[2], type:'text' },
+    { key:'feat4_title',    el:()=>document.querySelectorAll('.feat-card h3')[3], type:'text' },
+    { key:'feat5_title',    el:()=>document.querySelectorAll('.feat-card h3')[4], type:'text' },
+    { key:'feat6_title',    el:()=>document.querySelectorAll('.feat-card h3')[5], type:'text' },
+    // QUOTE + CTA
+    { key:'big_quote',      el:()=>document.querySelector('.big-quote'), type:'text' },
+    { key:'quote_attr',     el:()=>document.querySelector('.quote-attr'), type:'text' },
+    { key:'cta_title',      el:()=>document.querySelector('.bottom-cta h2'), type:'text' },
+    { key:'cta_sub',        el:()=>document.querySelector('.bottom-cta p'), type:'text' },
+    { key:'cta_btn',        el:()=>document.querySelector('.bottom-cta .btn-primary'), type:'text' },
+    // MAP PAGE
+    { key:'map_badge',      el:()=>document.querySelector('#page-map .page-header .badge'), type:'text' },
+    { key:'map_h2',         el:()=>document.querySelector('#page-map .page-header h2'), type:'text' },
+    { key:'map_p',          el:()=>document.querySelector('#page-map .page-header p'), type:'text' },
+    { key:'city_label',     el:()=>document.querySelector('.city-selector-label'), type:'text' },
+    { key:'route_label_txt',el:()=>document.querySelector('.route-label'), type:'text' },
+    { key:'route_hint_txt', el:()=>document.querySelector('.route-hint'), type:'text' },
+    { key:'route_btn_txt',  el:()=>document.querySelector('.route-btn'), type:'text' },
+    { key:'route_clear_txt',el:()=>document.querySelector('.route-clear'), type:'text' },
+    { key:'search_ph',      el:()=>document.getElementById('place-search'), type:'placeholder' },
+    { key:'from_ph',        el:()=>document.getElementById('route-from'), type:'placeholder' },
+    { key:'to_ph',          el:()=>document.getElementById('route-to'), type:'placeholder' },
+    // TIPS PAGE
+    { key:'tips_badge',     el:()=>document.querySelector('#page-tips .page-header .badge'), type:'text' },
+    { key:'tips_h2',        el:()=>document.querySelector('#page-tips .page-header h2'), type:'text' },
+    { key:'tips_p',         el:()=>document.querySelector('#page-tips .page-header p'), type:'text' },
+    { key:'tips_ai_strong', el:()=>document.querySelector('.tips-ai-text strong'), type:'text' },
+    // TRANSPORT PAGE
+    { key:'transport_badge',el:()=>document.querySelector('#page-transport .page-header .badge'), type:'text' },
+    { key:'transport_h2',   el:()=>document.querySelector('#page-transport .page-header h2'), type:'text' },
+    { key:'transport_p',    el:()=>document.querySelector('#page-transport .page-header p'), type:'text' },
+    { key:'planner_title',  el:()=>document.querySelector('.planner-title'), type:'text' },
+    { key:'from_label',     el:()=>document.querySelectorAll('.planner-field label')[0], type:'text' },
+    { key:'to_label',       el:()=>document.querySelectorAll('.planner-field label')[1], type:'text' },
+    { key:'transport_ph',   el:()=>document.querySelector('.transport-placeholder'), type:'text' },
+    // VISA PAGE
+    { key:'visa_badge',     el:()=>document.querySelector('#page-visas .page-header .badge'), type:'text' },
+    { key:'visa_h2',        el:()=>document.querySelector('#page-visas .page-header h2'), type:'text' },
+    { key:'visa_p',         el:()=>document.querySelector('#page-visas .page-header p'), type:'text' },
+    { key:'visa_search_ph', el:()=>document.getElementById('visa-search'), type:'placeholder' },
+    // AI
+    { key:'ai_name',        el:()=>document.querySelector('.ai-chat-name'), type:'text' },
+    { key:'ai_status',      el:()=>document.querySelector('.ai-chat-status'), type:'text' },
+    { key:'ai_ph',          el:()=>document.getElementById('ai-input'), type:'placeholder' },
+    { key:'ai_greeting',    el:()=>document.querySelector('#ai-messages .ai-bubble-msg'), type:'html' },
+    { key:'ai_btn1',        el:()=>document.querySelectorAll('.ai-qr button')[0], type:'text' },
+    { key:'ai_btn2',        el:()=>document.querySelectorAll('.ai-qr button')[1], type:'text' },
+    { key:'ai_btn3',        el:()=>document.querySelectorAll('.ai-qr button')[2], type:'text' },
+    { key:'ai_btn4',        el:()=>document.querySelectorAll('.ai-qr button')[3], type:'text' },
+  ];
+}
+
+function storeOriginals() {
+  for (const item of getElementMap()) {
+    const el = item.el();
+    if (!el) continue;
+    originals[item.key] = item.type === 'placeholder' ? el.placeholder : el.innerHTML;
+  }
+}
+
+function applyLang(code) {
+  currentLangCode = code;
+  const idx = LANG_ORDER.indexOf(code);
+  if (idx === -1) return;
+
+  for (const item of getElementMap()) {
+    const el = item.el();
+    if (!el) continue;
+    const vals = TR[item.key];
+    if (!vals) continue;
+    const val = vals[idx] !== undefined ? vals[idx] : vals[0];
+    if (item.type === 'placeholder') el.placeholder = val;
+    else if (item.type === 'text') el.textContent = val;
+    else el.innerHTML = val; // 'html' — allows bold, spans etc
+  }
+
+  // Set AI language note for responses
+  const langNames = {
+    VI:'Vietnamese', ZH:'Chinese', KO:'Korean', JA:'Japanese',
+    FR:'French', DE:'German', ES:'Spanish', TH:'Thai', RU:'Russian', IT:'Italian'
+  };
+  window.aiLangNote = langNames[code]
+    ? ' Please respond entirely in ' + langNames[code] + '.'
+    : '';
+}
+
+function toggleLangMenu() {
+  document.getElementById('lang-dropdown').classList.toggle('open');
+}
+
+function setLang(code, el) {
+  const meta = LANG_META[code];
+  if (!meta) return;
+  document.getElementById('lang-flag').textContent = meta.flag;
+  document.getElementById('lang-name').textContent = code;
+  document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('lang-dropdown').classList.remove('open');
+  applyLang(code);
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-selector')) {
+    const dd = document.getElementById('lang-dropdown');
+    if (dd) dd.classList.remove('open');
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════════
+// VIETGUIDE — MAIN APP
+// ═══════════════════════════════════════════════════════════════
+// JAVA BACKEND DEV:
+//   Create POST /api/chat
+//   Receives: { system, messages, model, max_tokens }
+//   Returns:  { content: [{ text: "..." }] }
+//   Proxies to: https://api.anthropic.com/v1/messages
+//   With header: x-api-key: YOUR_ANTHROPIC_KEY
+// ═══════════════════════════════════════════════════════════════
+
+// ── STATE ─────────────────────────────────────────────────────
+let appContext   = { page: 'landing', city: null, place: null };
+let currentPlace = null;
+let chatOpen     = false;
+let chatHistory  = [];
+let googleMap    = null;
+let gMarkers     = [];
+let dirService   = null;
+let dirRenderer  = null;
+let infoWin      = null;
+let activeCat    = 'all';
+let searchVal    = '';
+let selectedId   = null;
+let activeCity   = 'all';
+let is3D         = false;
+let wxCache      = {};
+
+// ── PLACES ────────────────────────────────────────────────────
+const places = [
+  // Airports
+  { id:1,  name:'Noi Bai International Airport', cat:'airport', city:'hanoi',    lat:21.2187, lng:105.8073, icon:'✈️', desc:'Main international airport for Hanoi, 35km north of the city. Use Grab to get in — about 45 minutes, costs around £5–8.' },
+  { id:2,  name:'Tan Son Nhat Airport',           cat:'airport', city:'hcmc',     lat:10.8185, lng:106.6577, icon:'✈️', desc:'Ho Chi Minh City\'s main airport — Vietnam\'s busiest. Grab available outside arrivals. About 30 minutes to District 1.' },
+  { id:3,  name:'Da Nang International Airport',  cat:'airport', city:'danang',   lat:16.0439, lng:108.1992, icon:'✈️', desc:'Central Vietnam hub, walking distance to Da Nang city. Gateway to Hoi An (30 min south) and Hue (1 hr north).' },
+  { id:4,  name:'Phu Quoc Airport',               cat:'airport', city:'phuquoc',  lat:10.2270, lng:103.9674, icon:'✈️', desc:'Serves Vietnam\'s largest island. International and domestic connections. Grab available outside.' },
+  { id:5,  name:'Cam Ranh Airport',               cat:'airport', city:'nhatrang', lat:11.9982, lng:109.2194, icon:'✈️', desc:'Serves Nha Trang resort area, 35km from the city. Many charter and budget airline connections.' },
+  // Hanoi
+  { id:6,  name:'Hanoi Old Quarter',              cat:'landmark', city:'hanoi',   lat:21.0340, lng:105.8498, icon:'🏮', desc:'The 1,000-year-old heart of Hanoi. 36 ancient streets each once sold specific goods. Incredible street food, cafes, and history. Best on foot — allow a full day.' },
+  { id:7,  name:'Hoan Kiem Lake',                 cat:'landmark', city:'hanoi',   lat:21.0285, lng:105.8522, icon:'🏛️', desc:'Iconic lake in the centre of Hanoi. Walk the red Huc Bridge to Ngoc Son Temple on the island. Beautiful at sunset. Car-free on weekends.' },
+  { id:8,  name:'Ho Chi Minh Mausoleum',          cat:'landmark', city:'hanoi',   lat:21.0366, lng:105.8348, icon:'🏛️', desc:'Resting place of Ho Chi Minh. Impressive Soviet-style building. Free entry but strict — cover shoulders and knees. Closed Monday and Friday afternoons.' },
+  { id:9,  name:'Temple of Literature',           cat:'landmark', city:'hanoi',   lat:21.0236, lng:105.8358, icon:'⛩️', desc:'Vietnam\'s first university, built in 1070. Beautiful architecture, peaceful courtyards. One of the best preserved heritage sites in Hanoi.' },
+  // HCMC
+  { id:10, name:'War Remnants Museum',            cat:'landmark', city:'hcmc',    lat:10.7794, lng:106.6920, icon:'🏛️', desc:'Powerful museum documenting the Vietnam War. Essential visit — allow 2+ hours. Emotionally intense but important. Located in District 3.' },
+  { id:11, name:'Ben Thanh Market',               cat:'landmark', city:'hcmc',    lat:10.7724, lng:106.6980, icon:'🛍️', desc:'HCMC\'s most iconic market. Clothes, souvenirs, and street food. Very touristy but fun. Bargain hard — start at 50% of asking price.' },
+  { id:12, name:'Reunification Palace',           cat:'landmark', city:'hcmc',    lat:10.7790, lng:106.6953, icon:'🏛️', desc:'Historic site where the Vietnam War ended in 1975. Preserved exactly as it was. Fascinating Cold War-era architecture and bunkers underground.' },
+  // Da Nang
+  { id:13, name:'My Khe Beach',                   cat:'landmark', city:'danang',  lat:16.0576, lng:108.2474, icon:'🏖️', desc:'Da Nang\'s famous beach — clean, long, and well-maintained. Great for swimming. Lined with hotels and seafood restaurants. Stunning sunrise views.' },
+  { id:14, name:'Marble Mountains',               cat:'landmark', city:'danang',  lat:15.9733, lng:108.2625, icon:'⛰️', desc:'Five marble and limestone hills with caves, pagodas, and tunnels inside. Great panoramic views. 9km south of Da Nang city.' },
+  { id:15, name:'Ba Na Hills Golden Bridge',      cat:'landmark', city:'danang',  lat:15.9979, lng:107.9923, icon:'🌉', desc:'The iconic bridge held by giant stone hands. 1,400m above sea level. Incredible views when weather is clear. 45 min from Da Nang by cable car.' },
+  // Hoi An
+  { id:16, name:'Hoi An Ancient Town',            cat:'landmark', city:'hoian',   lat:15.8779, lng:108.3263, icon:'🏮', desc:'UNESCO World Heritage ancient town. Lantern-lit streets, tailor shops, cooking classes. Magical at night. Buy an entrance pass (~£3) for the heritage buildings.' },
+  { id:17, name:'Japanese Covered Bridge',        cat:'landmark', city:'hoian',   lat:15.8773, lng:108.3225, icon:'🌉', desc:'400-year-old bridge built by Japanese traders — the symbol of Hoi An. Free to photograph from outside, ticket required to enter. Gets very busy midday.' },
+  // Hue
+  { id:18, name:'Imperial Citadel of Hue',        cat:'landmark', city:'hue',     lat:16.4698, lng:107.5780, icon:'🏯', desc:'Massive walled complex, former seat of the Nguyen Dynasty emperors. UNESCO World Heritage. Allow half a day. The moat and gates are extraordinary.' },
+  { id:19, name:'Thien Mu Pagoda',                cat:'landmark', city:'hue',     lat:16.4539, lng:107.5467, icon:'⛩️', desc:'Seven-storey pagoda on the Perfume River — one of Vietnam\'s most iconic landmarks. Reach it by boat for the most beautiful approach.' },
+  // Other
+  { id:20, name:'Halong Bay',                     cat:'landmark', city:'all',     lat:20.9101, lng:107.1839, icon:'⛵', desc:'UNESCO World Heritage — 1,600+ limestone islands from emerald waters. Overnight cruise essential. Book 2 days/1 night minimum with a reputable company.' },
+  { id:21, name:'Nha Trang Beach',                cat:'landmark', city:'nhatrang',lat:12.2452, lng:109.1943, icon:'🏖️', desc:'Vietnam\'s most popular beach resort. Crystal-clear water, great for diving and island hopping. Lively backpacker scene in the evenings.' },
+  { id:22, name:'Sao Beach',                      cat:'landmark', city:'phuquoc', lat:10.0308, lng:103.9814, icon:'🏝️', desc:'Stunning powder-white sand and crystal-clear water — one of Vietnam\'s best beaches. South of Phu Quoc, much quieter than the main tourist areas.' },
+  // Food spots
+  { id:23, name:'Pho 10 — Hanoi',                 cat:'food',     city:'hanoi',   lat:21.0320, lng:105.8480, icon:'🍜', desc:'Famous pho restaurant on Ly Quoc Su Street. Classic northern-style Pho Bo. Opens 6am. Often a queue but moves fast — worth every minute. About £1.50 a bowl.' },
+  { id:24, name:'Bun Cha Huong Lien',             cat:'food',     city:'hanoi',   lat:21.0215, lng:105.8413, icon:'🍢', desc:'Made world-famous when Obama and Anthony Bourdain ate here. Grilled pork with noodles. Very local atmosphere. Queue out the door at lunch — get there early.' },
+  { id:25, name:'Banh Mi 25',                     cat:'food',     city:'hanoi',   lat:21.0340, lng:105.8524, icon:'🥖', desc:'One of Hanoi\'s best banh mi on Hang Ca Street. Crispy baguette, generous fillings. About 30,000 VND (£1). Tiny spot — eat on the street.' },
+  { id:26, name:'Pho Hoa Pasteur',                cat:'food',     city:'hcmc',    lat:10.7783, lng:106.6921, icon:'🍜', desc:'Legendary southern-style pho restaurant on Pasteur Street. Fresh herbs, bean sprouts, hoisin on the side. HCMC pho is richer and sweeter than Hanoi\'s.' },
+  { id:27, name:'White Rose Restaurant',          cat:'food',     city:'hoian',   lat:15.8778, lng:108.3291, icon:'🌹', desc:'Only place in the world that makes authentic White Rose Dumplings (Banh Vac) — a Hoi An-exclusive dish. Delicate prawn dumplings, beautiful presentation.' },
+  { id:28, name:'Cao Lau Thanh',                  cat:'food',     city:'hoian',   lat:15.8771, lng:108.3285, icon:'🍝', desc:'Best Cao Lau in Hoi An — thick noodles with pork, greens, crispy croutons. This dish can only be made authentically in Hoi An. A must-eat.' },
+  { id:29, name:'Banh Xeo Ba Duong',              cat:'food',     city:'danang',  lat:16.0698, lng:108.2239, icon:'🥞', desc:'Famous for Da Nang-style banh xeo — giant sizzling crispy crepes with prawns and pork. Wrap in rice paper and fresh herbs. One of the city\'s best eats.' },
+  { id:30, name:'Phu Quoc Night Market',          cat:'food',     city:'phuquoc', lat:10.2176, lng:103.9621, icon:'🌙', desc:'Duong Dong night market — fresh seafood, tropical fruit, and street food. Very touristy but lively and fun. Always negotiate the price before ordering.' },
+];
+
+const catColors = { airport:'#D85A30', landmark:'#1D9E75', food:'#C9A84C' };
+const catLabels = { airport:'Airport', landmark:'Landmark', food:'Food & drink' };
+const catSizes  = { airport:9, landmark:10, food:8 };
+
+const cityNames = { hanoi:'Hanoi', hcmc:'Ho Chi Minh City', danang:'Da Nang', hoian:'Hoi An', hue:'Hue', nhatrang:'Nha Trang', phuquoc:'Phu Quoc', halong:'Halong Bay' };
+const cityCentres = {
+  all:      { lat:16.5,   lng:107.5,   zoom:6  },
+  hanoi:    { lat:21.028, lng:105.854, zoom:13 },
+  hcmc:     { lat:10.823, lng:106.630, zoom:13 },
+  danang:   { lat:16.054, lng:108.202, zoom:13 },
+  hoian:    { lat:15.880, lng:108.338, zoom:14 },
+  hue:      { lat:16.464, lng:107.591, zoom:13 },
+  nhatrang: { lat:12.239, lng:109.197, zoom:13 },
+  phuquoc:  { lat:10.290, lng:103.984, zoom:13 },
+  halong:   { lat:20.910, lng:107.184, zoom:10 },
+};
+
+// ── TRANSPORT ROUTES ──────────────────────────────────────────
+const routes = {
+  'hanoi-hcmc':    [{ icon:'✈️', name:'Flight',       detail:'VietJet / Vietnam Airlines / Bamboo',  price:'£25–£80',  time:'2h 10m',  url:'https://www.vietjetair.com'       },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express SE1/SE3',         price:'£15–£45',  time:'30–35 hrs',url:'https://dsvn.vn'                  },
+                    { icon:'🚌', name:'Sleeper bus',   detail:'Phuong Trang / The Sinh Tourist',      price:'£18–£28',  time:'~48 hrs', url:'https://vexere.com'               }],
+  'hanoi-danang':  [{ icon:'✈️', name:'Flight',       detail:'Vietnam Airlines / Bamboo / VietJet',  price:'£20–£60',  time:'1h 20m',  url:'https://www.vietnamairlines.com'  },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express',                 price:'£12–£30',  time:'14–16 hrs',url:'https://dsvn.vn'                  },
+                    { icon:'🚌', name:'Sleeper bus',   detail:'Hoang Long / Canh Tho',                price:'£12–£18',  time:'~13 hrs', url:'https://vexere.com'               }],
+  'hanoi-hoian':   [{ icon:'✈️', name:'Flight + Grab',detail:'Fly to Da Nang, then 30 min Grab',     price:'£22–£65',  time:'~2 hrs',  url:'https://www.vietjetair.com'       },
+                    { icon:'🚆', name:'Train + Grab',  detail:'Train to Da Nang + Grab taxi',         price:'£15–£32',  time:'~15 hrs', url:'https://dsvn.vn'                  }],
+  'hanoi-hue':     [{ icon:'✈️', name:'Flight',       detail:'Vietnam Airlines direct',              price:'£18–£55',  time:'1h 10m',  url:'https://www.vietnamairlines.com'  },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express',                 price:'£10–£25',  time:'12–14 hrs',url:'https://dsvn.vn'                  }],
+  'hanoi-halong':  [{ icon:'🚌', name:'Bus + boat',   detail:'Limousine bus to Halong, cruise',      price:'£15–£25',  time:'3.5 hrs', url:'https://vexere.com'               },
+                    { icon:'🚗', name:'Private car',   detail:'Direct to Halong Bay pier',            price:'£40–£70',  time:'2.5 hrs', url:'https://grab.com'                 }],
+  'hcmc-danang':   [{ icon:'✈️', name:'Flight',       detail:'VietJet / Bamboo Airways',             price:'£18–£55',  time:'1h 15m',  url:'https://www.vietjetair.com'       },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express',                 price:'£12–£28',  time:'15–17 hrs',url:'https://dsvn.vn'                  }],
+  'hcmc-phuquoc':  [{ icon:'✈️', name:'Flight',       detail:'VietJet / Vietnam Airlines',           price:'£15–£45',  time:'55 min',  url:'https://www.vietjetair.com'       },
+                    { icon:'⛴️', name:'Ferry',         detail:'Superdong Ferry from Ha Tien',         price:'£10–£18',  time:'~2h 15m', url:'https://superdong.com.vn'         }],
+  'hcmc-nhatrang': [{ icon:'✈️', name:'Flight',       detail:'VietJet direct',                       price:'£12–£40',  time:'55 min',  url:'https://www.vietjetair.com'       },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express',                 price:'£10–£22',  time:'7–8 hrs', url:'https://dsvn.vn'                  },
+                    { icon:'🚌', name:'Sleeper bus',   detail:'Phuong Trang direct',                  price:'£8–£14',   time:'~8 hrs',  url:'https://vexere.com'               }],
+  'danang-hoian':  [{ icon:'📱', name:'Grab',         detail:'Direct 30 min drive via App',          price:'£4–£8',    time:'30 min',  url:'https://grab.com'                 },
+                    { icon:'🛺', name:'Grab Bike',     detail:'Cheaper motorbike option',             price:'£2–£4',    time:'35 min',  url:'https://grab.com'                 }],
+  'danang-hue':    [{ icon:'📱', name:'Grab / taxi',  detail:'Scenic Hai Van Pass route',            price:'£18–£25',  time:'~1 hr',   url:'https://grab.com'                 },
+                    { icon:'🚆', name:'Train',         detail:'Short scenic coastal journey',         price:'£3–£8',    time:'2h 30m',  url:'https://dsvn.vn'                  }],
+  'hue-hoian':     [{ icon:'📱', name:'Grab / taxi',  detail:'Via Hai Van Pass — scenic drive',      price:'£20–£28',  time:'~2 hrs',  url:'https://grab.com'                 },
+                    { icon:'🚌', name:'Open tour bus', detail:'Tourist shuttle service',              price:'£4–£8',    time:'~3 hrs',  url:'https://vexere.com'               }],
+  'nhatrang-hcmc': [{ icon:'✈️', name:'Flight',       detail:'VietJet direct',                       price:'£12–£40',  time:'55 min',  url:'https://www.vietjetair.com'       },
+                    { icon:'🚆', name:'Train',         detail:'Reunification Express',                 price:'£10–£22',  time:'7–8 hrs', url:'https://dsvn.vn'                  }],
+};
+
+function getRouteKey(a, b) {
+  if (routes[a + '-' + b]) return a + '-' + b;
+  if (routes[b + '-' + a]) return b + '-' + a;
+  return null;
+}
+
+// ── VISA DATA ─────────────────────────────────────────────────
+const visas = [
+  { flag:'🇬🇧', name:'United Kingdom',   status:'free',     label:'45 days visa-free' },
+  { flag:'🇩🇪', name:'Germany',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇫🇷', name:'France',           status:'free',     label:'45 days visa-free' },
+  { flag:'🇮🇹', name:'Italy',            status:'free',     label:'45 days visa-free' },
+  { flag:'🇪🇸', name:'Spain',            status:'free',     label:'45 days visa-free' },
+  { flag:'🇳🇱', name:'Netherlands',      status:'free',     label:'45 days visa-free' },
+  { flag:'🇵🇱', name:'Poland',           status:'free',     label:'45 days visa-free' },
+  { flag:'🇨🇿', name:'Czech Republic',   status:'free',     label:'45 days visa-free' },
+  { flag:'🇷🇴', name:'Romania',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇧🇪', name:'Belgium',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇸🇪', name:'Sweden',           status:'free',     label:'45 days visa-free' },
+  { flag:'🇳🇴', name:'Norway',           status:'free',     label:'45 days visa-free' },
+  { flag:'🇩🇰', name:'Denmark',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇫🇮', name:'Finland',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇨🇭', name:'Switzerland',      status:'free',     label:'45 days visa-free' },
+  { flag:'🇦🇹', name:'Austria',          status:'free',     label:'45 days visa-free' },
+  { flag:'🇵🇹', name:'Portugal',         status:'free',     label:'45 days visa-free' },
+  { flag:'🇬🇷', name:'Greece',           status:'free',     label:'45 days visa-free' },
+  { flag:'🇯🇵', name:'Japan',            status:'free',     label:'45 days visa-free' },
+  { flag:'🇰🇷', name:'South Korea',      status:'free',     label:'45 days visa-free' },
+  { flag:'🇸🇬', name:'Singapore',        status:'free',     label:'45 days visa-free' },
+  { flag:'🇹🇭', name:'Thailand',         status:'free',     label:'30 days visa-free' },
+  { flag:'🇲🇾', name:'Malaysia',         status:'free',     label:'30 days visa-free' },
+  { flag:'🇵🇭', name:'Philippines',      status:'free',     label:'21 days visa-free' },
+  { flag:'🇮🇩', name:'Indonesia',        status:'free',     label:'30 days visa-free' },
+  { flag:'🇭🇰', name:'Hong Kong',        status:'free',     label:'14 days visa-free' },
+  { flag:'🇹🇼', name:'Taiwan',           status:'free',     label:'14 days visa-free' },
+  { flag:'🇺🇸', name:'United States',    status:'evisa',    label:'E-visa required'   },
+  { flag:'🇦🇺', name:'Australia',        status:'evisa',    label:'E-visa required'   },
+  { flag:'🇳🇿', name:'New Zealand',      status:'evisa',    label:'E-visa required'   },
+  { flag:'🇨🇦', name:'Canada',           status:'evisa',    label:'E-visa required'   },
+  { flag:'🇮🇳', name:'India',            status:'evisa',    label:'E-visa required'   },
+  { flag:'🇨🇳', name:'China',            status:'evisa',    label:'E-visa required'   },
+  { flag:'🇷🇺', name:'Russia',           status:'evisa',    label:'E-visa required'   },
+  { flag:'🇺🇦', name:'Ukraine',          status:'evisa',    label:'E-visa required'   },
+  { flag:'🇧🇷', name:'Brazil',           status:'evisa',    label:'E-visa required'   },
+  { flag:'🇲🇽', name:'Mexico',           status:'evisa',    label:'E-visa required'   },
+  { flag:'🇦🇷', name:'Argentina',        status:'evisa',    label:'E-visa required'   },
+  { flag:'🇿🇦', name:'South Africa',     status:'evisa',    label:'E-visa required'   },
+  { flag:'🇸🇦', name:'Saudi Arabia',     status:'evisa',    label:'E-visa required'   },
+  { flag:'🇦🇪', name:'UAE',              status:'evisa',    label:'E-visa required'   },
+  { flag:'🇲🇦', name:'Morocco',          status:'evisa',    label:'E-visa required'   },
+  { flag:'🇨🇱', name:'Chile',            status:'evisa',    label:'E-visa required'   },
+  { flag:'🇧🇩', name:'Bangladesh',       status:'required', label:'Visa required'     },
+  { flag:'🇵🇰', name:'Pakistan',         status:'required', label:'Visa required'     },
+  { flag:'🇳🇬', name:'Nigeria',          status:'required', label:'Visa required'     },
+  { flag:'🇬🇭', name:'Ghana',            status:'required', label:'Visa required'     },
+  { flag:'🇰🇪', name:'Kenya',            status:'required', label:'Visa required'     },
+  { flag:'🇪🇹', name:'Ethiopia',         status:'required', label:'Visa required'     },
+  { flag:'🇮🇷', name:'Iran',             status:'required', label:'Visa required'     },
+];
+
+// ── AI ─────────────────────────────────────────────────────────
+const SYSTEM = `You are VietGuide AI, a friendly expert Vietnam travel assistant. Answer ANY question about Vietnam travel with detailed, helpful, accurate information. You have deep knowledge of: visas for all nationalities, transport options between all cities with prices and times, food in every city, culture and customs, safety and scams, weather by region and season, accommodation, money and budgeting, SIM cards, health and vaccinations, packing, nightlife, shopping, specific restaurants, all landmarks and attractions. Always be warm, concise, use emojis naturally, and format responses with line breaks for readability. Never refuse a Vietnam travel question. If context shows the user is looking at a specific city or place, tailor your answer to that.`;
+
+const KB = {
+  visa:         '🪪 **Vietnam visas:**\n\n✅ **Visa-free (45 days):** UK, Germany, France, Italy, Spain, all EU, Japan, South Korea, Singapore, Norway, Sweden, Denmark, Finland, and more\n\n🌐 **E-visa (up to 90 days):** US, Australia, Canada, India, China, Russia and many others\n• Apply at evisa.xuatnhapcanh.gov.vn (official only)\n• Takes 3 working days · Costs ~£20\n• Single or multiple entry, up to 90 days\n\n📄 **Visa required (embassy):** Bangladesh, Pakistan, Nigeria, Ghana, Kenya and some others\n\nWhich country are you from? I can give you the exact answer.',
+  food:         '🍜 **Vietnam\'s must-try dishes:**\n\n🥣 **Pho** — fragrant noodle soup, the national dish. Try Pho Bo (beef) or Pho Ga (chicken). Try it for breakfast!\n🥖 **Banh Mi** — crispy French baguette with pork, pâté, pickled veg, herbs, and chilli. About £0.50–1\n🌿 **Goi Cuon** — fresh spring rolls with prawns, herbs, rice paper. Light and delicious\n🍝 **Cao Lau** — thick noodles with pork, unique to Hoi An only\n🍢 **Bun Cha** — grilled pork patties with noodles. Obama ate this in Hanoi!\n🥞 **Banh Xeo** — giant sizzling crispy crepe with pork and prawns\n🍛 **Com Tam** — broken rice with grilled pork, the HCMC signature dish\n🍜 **Bun Bo Hue** — spicy lemongrass beef noodle soup from Hue\n\nWant recommendations for a specific city?',
+  vegetarian:   '🥗 **Vegetarian food in Vietnam:**\n\nVietnam is fantastic for vegetarians!\n\n**What to look for:**\n• "Com chay" or "quan chay" = Buddhist vegetarian restaurant\n• "Chay" on any menu means vegetarian\n• Especially common on 1st and 15th of each lunar month\n• Hue has exceptional Buddhist vegetarian cuisine\n\n⚠️ **Watch out for:**\n• Fish sauce is in almost everything — ask "khong co nuoc mam"\n• Shrimp paste hidden in many dishes\n• Say: "khong co thit, khong co hai san" (no meat, no seafood)\n\nBest cities for vegetarians: Hanoi, HCMC, Hue, Da Nang',
+  vegan:        '🌱 **Vegan food in Vietnam:**\n\nIncreasingly available — especially in major cities.\n\n• Fully vegan restaurants in Hanoi, HCMC, Da Nang, Hoi An — use HappyCow app\n• Buddhist chay restaurants are often very close to vegan\n• Markets have excellent fresh fruit and vegetables\n\n**Key phrases:**\n• "Toi an chay thuan" = I eat fully vegan\n• "Khong trung, khong sua" = no eggs, no dairy\n\n⚠️ Fish sauce hides in many "vegetarian" dishes — always ask',
+  halal:        '🌙 **Halal food in Vietnam:**\n\n**Ho Chi Minh City** — best halal scene\n• Large Muslim community near Nam Ky Khoi Nghia Street\n• Indian restaurants throughout District 1 and 3\n• Search "halal" on Google Maps — many certified options\n\n**Hanoi** — growing halal options\n• Near the Old Quarter and Hoan Kiem area\n• Indian and Middle Eastern restaurants available\n\n**Da Nang, Nha Trang** — some options in tourist areas\n\nTip: "Thuc pham halal" is Vietnamese for halal food',
+  money:        '💴 **Vietnam money guide:**\n\nCurrency: Vietnamese Dong (VND)\n• £1 ≈ 31,000 VND · $1 ≈ 25,000 VND · €1 ≈ 27,000 VND\n\n**ATMs:**\n• Widely available in all cities and tourist areas\n• Vietcombank and Techcombank — lowest foreign fees (~50,000 VND / £1.60)\n• Withdraw larger amounts to minimise transaction fees\n\n**Exchanging money:**\n• Banks = best rates\n• Official exchange counters = good\n• Airport exchange booths = avoid (poor rates)\n\n**Cash vs card:**\n• Cash is king in Vietnam — street food, markets, local restaurants are cash only\n• Hotels, tourist restaurants, and malls take cards\n• Always carry some cash\n\n**Daily budgets:**\n• Budget: £25–40/day · Mid-range: £50–100/day · Comfort: £100–200/day',
+  grab:         '📱 **Grab — Vietnam\'s essential app:**\n\nDownload Grab before you arrive — it\'s like Uber for Southeast Asia.\n\n**Services:**\n• GrabBike — motorbike taxi, cheapest, great in traffic jams\n• GrabCar — air-conditioned car, more comfortable\n• GrabFood — food delivery\n\n**How it works:**\n• Register with your phone number (UK numbers work fine)\n• Enter pickup + destination — fixed price shown upfront\n• No haggling, no meter tampering, driver tracked\n• Pay by cash or card\n\n**Prices:** Short GrabBike trip £0.60–1.50 · Airport to city ~£5–10\n\n✅ Always use Grab over hailing random taxis — much safer and usually cheaper',
+  scam:         '⚠️ **Vietnam tourist scams to watch for:**\n\n1. 🚖 **Fake taxis** — tampered meters or flat-rate scam. ALWAYS use Grab app\n2. 👟 **Shoe shine scam** — shines your shoes uninvited then demands £10+\n3. 💐 **Flower/bracelet scam** — puts it on you, then demands money\n4. 🛺 **Cyclo no-price scam** — agree price upfront or refuse\n5. 🎯 **"Closed today" redirect** — tout says your destination is closed, takes you to their shop\n6. 💱 **Short-change** — count your money carefully at markets\n7. 📸 **Costume photo fee** — people in costumes at tourist spots charge for photos\n8. 🃏 **Friendly card game** — always rigged, never play\n\n✅ **Golden rule:** Agree prices upfront, use Grab for all transport, trust your gut',
+  safety:       '🛡️ **Vietnam safety:**\n\nOverall Vietnam is very safe — violent crime against tourists is rare.\n\n**Main risks:**\n• Traffic — chaotic motorbikes in cities\n  - Cross slowly and steadily, traffic will flow around you\n  - Never run or stop suddenly\n  - Use Grab rather than walking long distances\n\n• Petty theft\n  - Keep bags away from the road side (bag snatching from motorbikes)\n  - Don\'t use your phone while walking near busy roads\n\n• See "scams" for the full list of tourist traps\n\n✅ Solo travellers including women are generally very safe\n✅ Vietnamese people are extremely welcoming and helpful',
+  weather:      '🌤️ **Vietnam weather by region:**\n\n**North (Hanoi):**\n• Oct–April: Cool and dry, 15–22°C — best time\n• May–Sep: Hot, humid, rainy season, up to 38°C\n\n**Central (Da Nang, Hoi An, Hue):**\n• Feb–July: Dry and sunny — best time\n• Sep–Nov: Typhoon season, heavy rain — avoid\n\n**South (HCMC, Mekong Delta):**\n• Nov–April: Dry season — ideal\n• May–Oct: Rainy season (brief daily showers)\n\n**Phu Quoc:**\n• Nov–April: Perfect beach weather\n• May–Oct: Rainier but still warm\n\n✅ **Best overall:** October to April covers most of the country',
+  itinerary:    '📅 **Classic 7-day Vietnam itinerary:**\n\n📍 **Days 1–2: Hanoi**\n• Old Quarter walking tour and street food\n• Hoan Kiem Lake at sunset\n• Egg coffee at Cafe Giang\n• Bun Cha for lunch (the Obama restaurant)\n\n📍 **Day 3: Halong Bay**\n• Overnight cruise — book in advance\n• Kayaking, caves, sunset on deck\n\n📍 **Day 4: Fly Da Nang → Check into Hoi An**\n• Evening lanterns in Ancient Town\n\n📍 **Day 5: Hoi An**\n• White Rose dumplings at White Rose Restaurant\n• Visit tailor for custom clothes (ready in 24–48hrs)\n• Cao Lau for dinner\n\n📍 **Day 6: Da Nang**\n• Marble Mountains morning\n• My Khe Beach afternoon\n• Dragon Bridge fire show (Sat/Sun evenings)\n\n📍 **Day 7: Fly to Ho Chi Minh City**\n• War Remnants Museum\n• Ben Thanh Market\n• Rooftop bar in District 1\n\nWant a longer itinerary or a different focus?',
+  hanoi:        '🏮 **Hanoi travel guide:**\n\n📍 **Must-see:**\n• Old Quarter — 36 ancient streets, incredible street food\n• Hoan Kiem Lake — heart of the city, beautiful at sunset\n• Ho Chi Minh Mausoleum — impressive, strict dress code\n• Temple of Literature — Vietnam\'s first university (1070 AD)\n• West Lake area — peaceful, great cafes\n\n🍜 **Must-eat:**\n• Pho Bo at Pho 10 (Ly Quoc Su St)\n• Bun Cha at Huong Lien (the Obama restaurant)\n• Egg coffee at Cafe Giang\n• Banh Cuon at morning markets\n\n💡 **Tips:**\n• Best explored on foot — wear comfortable shoes\n• Go early morning for the best street food atmosphere\n• Always use Grab — taxi scams are common\n• Best time to visit: October–April',
+  hcmc:         '🌆 **Ho Chi Minh City (Saigon) guide:**\n\n📍 **Must-see:**\n• War Remnants Museum — powerful, allow 2+ hours\n• Ben Thanh Market — touristy but great for souvenirs\n• Cu Chi Tunnels — incredible day trip, 70km from city\n• Reunification Palace — fascinating Cold War history\n• District 1 rooftop bars — amazing city views\n\n🍜 **Must-eat:**\n• Com Tam (broken rice) — HCMC\'s signature dish\n• Banh Mi Huynh Hoa — famous late-night banh mi\n• Pho Hoa Pasteur — legendary pho restaurant\n\n🌃 **Nightlife:** Bui Vien Walking Street, rooftop bars\n💡 **Tips:** Use Grab only — taxi scams are rife. Day trip to Mekong Delta is highly recommended.',
+  hoian:        '🏮 **Hoi An guide:**\n\n📍 **Must-see:**\n• Ancient Town at night — lanterns lit, incredibly atmospheric\n• Japanese Covered Bridge — 400 years old, the town\'s symbol\n• Tailor shops — custom clothes made in 24–48 hours (great quality, very affordable)\n• An Bang Beach — 5km away, quieter than the main beach\n• Cooking class + market tour (~£20)\n\n🍜 **Must-eat:**\n• Cao Lau — only authentic in Hoi An (thick noodles, pork, croutons)\n• White Rose Dumplings at White Rose Restaurant — nowhere else\n• Banh Mi Phuong — world-famous sandwich shop\n\n💡 **Tips:**\n• Buy town entrance ticket (~£3) to enter heritage monuments\n• Rent a bicycle — perfect for getting around\n• Tailors are excellent — allow 24–48 hrs for fittings\n• Best time: February–July',
+  danang:       '🏖️ **Da Nang guide:**\n\n📍 **Must-see:**\n• My Khe Beach — clean, long, great for swimming\n• Marble Mountains — caves, pagodas, views\n• Ba Na Hills — Golden Bridge held by giant stone hands\n• Dragon Bridge — breathes fire on Sat/Sun evenings!\n• Museum of Cham Sculpture\n\n🍜 **Must-eat:**\n• Banh Xeo at Ba Duong — sizzling crepes\n• Mi Quang — noodles with peanuts, unique to Da Nang\n• Fresh seafood along the beach\n\n💡 **Tips:**\n• Great base for day trips: Hoi An (30 min), Hue (1 hr)\n• Ba Na Hills is worth a half day\n• Best beaches in the morning before it gets too hot\n• Best time: Feb–July',
+  hue:          '🏯 **Hue city guide:**\n\n📍 **Must-see:**\n• Imperial Citadel — UNESCO, former royal capital, stunning moat and gates\n• Royal Tombs — scattered outside the city, each unique\n• Thien Mu Pagoda — 7-storey tower on the Perfume River\n• Dong Ba Market — best local market in Central Vietnam\n• Perfume River boat trip\n\n🍜 **Hue cuisine — some of Vietnam\'s finest:**\n• Bun Bo Hue — spicy lemongrass beef noodle soup\n• Banh Khoai — thick crispy crepes\n• Com Hen — tiny clams on rice\n• Royal cuisine restaurants — elaborate, beautiful\n\n💡 **Tips:**\n• Hire a driver for the royal tombs — spread out and hard to reach otherwise\n• Hue to Hoi An via Hai Van Pass is one of Vietnam\'s most scenic drives\n• Best time: Feb–August',
+  nhatrang:     '🌊 **Nha Trang guide:**\n\n📍 **Must-do:**\n• Island hopping tour — Hon Mun, Hon Tam, Hon Mot\n• Scuba diving or snorkelling — clear turquoise water\n• Vinpearl Land — cable car to island amusement park\n• Po Nagar Cham Towers — ancient Hindu temples\n• Nha Trang Beach — 6km of maintained beachfront\n\n🍜 **Food:**\n• Nem Nuong Ninh Hoa — Nha Trang\'s famous grilled pork rolls\n• Fresh seafood at Dam Market\n• Bun Sua — jellyfish noodles (unique to Nha Trang!)\n\n💡 **Tips:**\n• Avoid Oct–Dec rainy season\n• Best diving April–September\n• More touristy than other cities but very easy to enjoy',
+  phuquoc:      '🏝️ **Phu Quoc island guide:**\n\n📍 **Must-do:**\n• Sao Beach — powder-white sand, stunning water, one of Vietnam\'s best\n• Night market in Duong Dong — fresh seafood and tropical fruit\n• Phu Quoc National Park — jungle trekking\n• Cable car — world\'s longest over water\n• Sunset Sanato Beach Club — famous sunset spot\n\n🍜 **Food:**\n• Fresh seafood — incredibly cheap and abundant\n• Phu Quoc fish sauce — world-famous, buy some to take home\n• Bun Quay — stir-fry noodles, local specialty\n\n💡 **Tips:**\n• Best time: November–April (dry season)\n• Rent a scooter to explore — the island is large\n• North is more developed, south is quieter and more beautiful\n• Fly from HCMC (55 min) or take ferry from Ha Tien',
+  halong:       '⛵ **Halong Bay guide:**\n\n• UNESCO World Heritage — 1,600+ limestone islands\n• 3.5 hours from Hanoi by road or limousine bus\n\n**Cruise options:**\n• Budget: £50–80/person/night\n• Mid-range: £100–150/person/night\n• Luxury: £200–400/person/night\n\n**All usually include:** meals, kayaking, cave tours, fishing, sunset drinks\n\n✅ **Tips:**\n• Go 2 days/1 night minimum — day trips aren\'t worth it\n• Book through a reputable company — avoid very cheap operators\n• Best time: April–June and September–November\n• Lan Ha Bay nearby is equally beautiful and less crowded',
+  transport:    '🚌 **Getting around Vietnam:**\n\n✈️ **Domestic flights** (best for long distances)\n• VietJet — cheapest, Hanoi–HCMC from £25\n• Vietnam Airlines — most reliable, baggage included\n• Book 2–4 weeks ahead for best prices\n\n🚆 **Trains** (Reunification Express)\n• Hanoi to HCMC: 30–35 hours, from £15\n• Scenic and comfortable — book soft sleeper class\n• Book at dsvn.vn or Baolau.com\n\n🚌 **Sleeper buses**\n• Lie-flat seats, overnight between cities\n• Very cheap: £8–20 · Book via Vexere.com\n\n📱 **Grab** — for ALL city transport\n• Never hail random taxis\n\nUse the Transport page to compare options for your specific route!',
+  tap_water:    '🚱 **Water safety in Vietnam:**\n\n❌ Never drink tap water anywhere in Vietnam\n❌ Avoid ice in drinks unless you\'re sure it\'s from filtered water\n❌ Avoid raw salads washed in unfiltered water\n\n✅ **Safe options:**\n• Bottled water everywhere — very cheap (5,000–10,000 VND)\n• Most restaurants use filtered water for cooking\n• Bring a reusable filtered water bottle\n\nThis applies even in 5-star hotels — always use bottled or filtered water.',
+  toilet:       '🧻 **Toilet tips for Vietnam:**\n\n⚠️ **Do NOT flush toilet paper** — the plumbing can\'t handle it\n• Always use the bin provided beside the toilet\n• Many bathrooms have a "bum gun" (handheld bidet sprayer)\n• Public toilets often don\'t provide paper — always carry a small packet\n• Some rural areas have squat toilets',
+  shoes:        '👟 **Removing shoes in Vietnam:**\n\nAlways remove shoes before entering:\n• Someone\'s home — always, look for pile of shoes at door\n• Temples and pagodas — always\n• Some traditional restaurants with low floor seating\n\nTip: Wear slip-on shoes when temple hopping — much easier!',
+  temple:       '⛩️ **Visiting Vietnamese temples:**\n\n**Dress code:**\n• Cover shoulders — bring a light cardigan or scarf\n• Cover knees — no shorts (sarongs available to borrow at most sites)\n\n**Behaviour:**\n• Remove shoes at the entrance\n• Don\'t point at Buddha statues or altars\n• Keep voice quiet\n• Don\'t turn your back on altars when leaving\n• Photography usually allowed — check for signs\n• Small donation at entrance is appreciated but not required',
+  english:      '🗣️ **English in Vietnam:**\n\n**Where English is spoken well:**\n• Hotels, guesthouses, tour operators\n• Restaurants in tourist areas\n• Younger people under 35 in cities\n• Grab drivers often know basic English\n\n**Where it\'s limited:**\n• Rural areas and villages\n• Older locals\n• Local markets and street food stalls\n\n✅ **Solutions:**\n• Google Translate camera — excellent for menus and signs\n• Learn a few basic phrases — locals really appreciate it\n\n**Useful phrases:** Xin chao (hello) · Cam on (thank you) · Bao nhieu? (how much?)',
+  sim:          '📱 **SIM cards in Vietnam:**\n\nBuy at the airport immediately after landing.\n\n**Best networks:**\n• Viettel — best nationwide coverage, including rural\n• Mobifone — good in cities, slightly cheaper\n\n**Costs:**\n• 5GB data: ~100,000 VND (£3)\n• 10–15GB: ~150,000–200,000 VND (£5–6)\n• Unlimited: ~300,000 VND (£10)\n\nYou need your passport to register the SIM.\nTop up at any convenience store (Family Mart, Circle K).',
+  budget:       '💰 **Vietnam travel budget:**\n\n**Budget traveller: £25–40/day**\n• Hostel dorm: £5–10\n• Street food meals: £1–3\n• Grab bike: £0.60–1.50\n• Local beer: £0.50–1\n\n**Mid-range: £50–100/day**\n• Private hotel room: £20–40\n• Restaurant meals: £5–15\n• Grab car: £3–8\n\n**Comfort: £100–200/day**\n• Boutique hotel: £50–100\n• Nice restaurants: £15–30\n• Private tours and drivers\n\nVietnam is one of Southeast Asia\'s best value destinations.',
+  accommodation: '🏨 **Where to stay in Vietnam:**\n\n**Budget:**\n• Hostels: £5–10/night (dorm), £10–20 (private)\n• Mini-hotels (nha nghi): £15–25/night\n• Book via Hostelworld or Booking.com\n\n**Mid-range:**\n• Boutique hotels: £30–60/night\n• Best value in Hoi An and Hue\n\n**Luxury:**\n• Heritage hotels in Hanoi/Hoi An: £100–300/night\n• Overwater bungalows in Phu Quoc: £150–400/night\n\n**Best booking apps:** Agoda (often cheapest for Vietnam), Booking.com, Airbnb',
+  health:       '💉 **Health advice for Vietnam:**\n\n**Recommended vaccinations (see your GP):**\n• Hepatitis A · Typhoid · Tetanus\n• Hepatitis B (longer stays)\n• Rabies (rural areas or trekking)\n• Japanese Encephalitis (rural/long stays)\n\n**Mosquitoes:**\n• Use DEET insect repellent — dengue fever is present\n• Malaria risk is low in tourist areas but non-zero in rural jungle\n• Wear long sleeves at dawn and dusk\n\n**Food safety:**\n• Never drink tap water\n• Peel all fruit yourself\n• Stick to busy street food stalls with high turnover',
+  packing:      '🎒 **What to pack for Vietnam:**\n\n**Clothing:**\n• Light, breathable fabrics — it\'s hot and humid\n• 1–2 modest outfits for temples (cover shoulders + knees)\n• Slip-on shoes for temples\n• Light rain jacket or packable umbrella\n\n**Essentials:**\n• Sunscreen (high SPF — UV is intense)\n• DEET insect repellent\n• Hand sanitiser\n• Portable power bank\n• Copies of passport and e-visa (printed)\n\n**Medicine kit:**\n• Imodium (stomach issues are common)\n• Antihistamine · Paracetamol · Plasters\n\n**Download before arriving:** Grab, Google Maps (offline), Google Translate, XE Currency',
+  airline:      '✈️ **Best airlines for Vietnam:**\n\n**International (flying to Vietnam from UK/Europe):**\n• Vietnam Airlines — direct London Heathrow to Hanoi, best service\n• Qatar Airways — via Doha, excellent service and food\n• Singapore Airlines — via Singapore, premium quality\n• Thai Airways — via Bangkok, good value\n• Emirates — via Dubai\n\n**Budget international:**\n• Scoot — from Singapore, budget\n• AirAsia — from Southeast Asian hubs\n\n**Domestic (within Vietnam):**\n• VietJet Air — cheapest, Hanoi–HCMC from £25\n• Vietnam Airlines — most reliable, baggage included\n• Bamboo Airways — good mid-range option',
+  tipping:      '💵 **Tipping in Vietnam:**\n\nNot mandatory but always appreciated:\n• Restaurants: 5–10% for good service\n• Tour guides: 100,000–200,000 VND (£3–6) per day\n• Hotel porter: 20,000–50,000 VND (£0.60–1.50)\n• Massage: 50,000–100,000 VND (£1.50–3)\n• Grab drivers: no tip expected\n• Street food: no tip expected\n\nHigher-end restaurants may add a service charge automatically.',
+  nightlife:    '🌃 **Vietnam nightlife:**\n\n**Ho Chi Minh City — best nightlife:**\n• Bui Vien Walking Street — backpacker bar strip, very lively\n• Rooftop bars in District 1 — Chill Skybar, Social Club\n• Local clubs: Envy, Seventeen Saloon\n\n**Hanoi:**\n• Ta Hien Street (Bia Hoi Junction) — cheapest beer in the world (£0.20)\n• Old Quarter bars and rooftops\n• Craft beer scene growing rapidly\n\n**Hoi An:**\n• Ancient Town lantern-lit bars and restaurants\n• An Bang Beach beach bars — chilled sunset vibe\n\n**Nha Trang:**\n• Lively backpacker bar scene on Biet Thu Street',
+  default:      '🤖 I\'m VietGuide AI — your Vietnam travel expert!\n\nI can answer anything about Vietnam:\n• 🪪 Visas — who needs one, how to apply, which countries\n• 🍜 Food — must-try dishes, vegetarian, vegan, halal options\n• 🚌 Transport — flights, trains, buses, Grab, routes, prices\n• 🏛️ Cities — Hanoi, HCMC, Hoi An, Da Nang, Hue, Nha Trang, Phu Quoc\n• 🛡️ Safety — scams, traffic, staying safe, solo travel\n• 💴 Money — exchange rates, ATMs, budgeting, costs\n• 🌤️ Weather — best time to visit each region\n• 📅 Itineraries — 7, 10, or 14 day plans\n• 🏨 Accommodation — where to stay, which apps to book\n• 💉 Health — vaccinations, food safety, mosquitoes\n• 🎒 Packing — what to bring for different seasons\n• 🌃 Nightlife, shopping, tipping, and much more\n\nJust ask me anything!'
+};
+
+async function getAIResponse(msg, ctx) {
+  let note = '';
+  if (ctx && ctx.place) note = ' [User is viewing: ' + ctx.place + ' on the map]';
+  else if (ctx && ctx.city) note = ' [User is browsing: ' + cityNames[ctx.city] + ']';
+  const langNote = window.aiLangNote || '';
+  chatHistory.push({ role: 'user', content: msg + note + langNote });
+
+  // Try Java backend proxy first
+  try {
+    const r = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: SYSTEM, messages: chatHistory, model: 'claude-sonnet-4-6', max_tokens: 1000 })
+    });
+    if (!r.ok) throw new Error('no proxy');
+    const d = await r.json();
+    const reply = d.content[0].text;
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    return reply;
+  } catch (e) {
+    // Fallback to local knowledge base
+    const lower = msg.toLowerCase();
+    // Smart route detection: "hanoi to da nang", "from hanoi to da nang" etc
+    const _cm = {'hanoi':'hanoi','ha noi':'hanoi','ho chi minh':'hcmc','saigon':'hcmc','hcmc':'hcmc','da nang':'danang','danang':'danang','hoi an':'hoian','hoian':'hoian','hue':'hue','nha trang':'nhatrang','nhatrang':'nhatrang','phu quoc':'phuquoc','phuquoc':'phuquoc','halong bay':'halong','ha long':'halong','halong':'halong'};
+    const _cn = {'hanoi':'Hanoi','hcmc':'Ho Chi Minh City','danang':'Da Nang','hoian':'Hoi An','hue':'Hue','nhatrang':'Nha Trang','phuquoc':'Phu Quoc','halong':'Halong Bay'};
+    function _fc(text) { const t = text.toLowerCase(); for (const [a,k] of Object.entries(_cm)) { if (t.includes(a)) return k; } return null; }
+
+    // Check for "X to Y" travel patterns
+    const _patterns = [
+      /(?:from|travel(?:ling)? from|going from|get(?:ting)? from|fly(?:ing)? from)\s+(.+?)\s+(?:to|and)\s+(.+?)(?:\?|$|,)/i,
+      /(?:i want to go|i wanna go|how do i get|how to get|best way)\s+from\s+(.+?)\s+to\s+(.+?)(?:\?|$|,)/i,
+      /^(.+?)\s+to\s+(.+?)(?:\?|$)/i,
+    ];
+    for (const pat of _patterns) {
+      const m = msg.match(pat);
+      if (!m) continue;
+      const fc = _fc(m[1]), tc = _fc(m[2]);
+      if (!fc || !tc || fc === tc) continue;
+      const rk = getRouteKey(fc, tc);
+      if (!rk) continue;
+      const opts = routes[rk];
+      const fn = _cn[fc]||fc, tn = _cn[tc]||tc;
+      let r = 'Getting from ' + fn + ' to ' + tn + ':\n\n';
+      opts.forEach((o,i) => {
+        r += (i===0?'RECOMMENDED: ':'') + o.icon + ' ' + o.name + '\n';
+        r += '- ' + o.detail + '\n';
+        r += '- Cost: ' + o.price + '\n';
+        r += '- Duration: ' + o.time + '\n';
+        if (o.url) r += '- Book at: ' + o.url + '\n';
+        r += '\n';
+      });
+      r += 'TIP: Go to the Transport page to compare and book directly with one tap!';
+      return r;
+    }
+
+    // General Vietnam question
+    if (/^(hows?|how is|what is|tell me about|describe|overview of|about)\s+(vietnam|viet nam)/i.test(msg.trim())) {
+      return 'Vietnam overview:\n\nVietnam is an incredible Southeast Asian country stretching 1,650km from north to south.\n\nThree main regions:\n- NORTH: Hanoi, Halong Bay - cooler, rich history, incredible street food\n- CENTRE: Hue, Hoi An, Da Nang - ancient towns, beaches, best food scene\n- SOUTH: Ho Chi Minh City, Phu Quoc - tropical, modern, buzzing nightlife\n\nFood: World-class cuisine. Pho, Banh Mi, fresh spring rolls, street food everywhere.\n\nCost: Very affordable. Budget travellers £25-40/day. Mid-range £50-100/day.\n\nSafety: Very safe for tourists. Friendly locals, low violent crime.\n\nBest time: October to April covers most of the country.\n\nWhat would you like to know more about? Cities, food, visas, transport?';
+    }
+
+    // Topic matching - use word boundaries with spaces
+    const ws = ' ' + lower + ' ';
+    if (ws.includes(' vegetarian ') || ws.includes(' veggie ') || ws.includes(' meat free ')) return KB.vegetarian;
+    if (ws.includes(' vegan ') || ws.includes(' plant based ') || ws.includes(' dairy free ')) return KB.vegan;
+    if (ws.includes(' halal ') || ws.includes(' muslim food ') || ws.includes(' islamic food ')) return KB.halal;
+    if (ws.includes(' visa ') || ws.includes(' evisa ') || ws.includes(' e-visa ') || lower.includes('do i need a visa') || lower.includes('entry requirement')) return KB.visa;
+    if (ws.includes(' weather ') || ws.includes(' climate ') || lower.includes('best time') || lower.includes('when to visit') || lower.includes('rainy season')) return KB.weather;
+    if (lower.includes('itinerary') || lower.includes('day plan') || lower.includes('trip plan') || /\d+ day/.test(lower) || ws.includes(' week ')) return KB.itinerary;
+    if (ws.includes(' money ') || ws.includes(' currency ') || ws.includes(' dong ') || ws.includes(' atm ') || lower.includes('how much') || ws.includes(' budget ') || lower.includes('exchange rate')) return KB.money;
+    if (ws.includes(' grab ') || lower.includes('ride app') || (ws.includes(' taxi ') && !lower.includes('scam'))) return KB.grab;
+    if (ws.includes(' scam ') || ws.includes(' fraud ') || lower.includes('rip off') || ws.includes(' cheat ') || ws.includes(' pickpocket ')) return KB.scam;
+    if (lower.includes('safe') || lower.includes('safety') || lower.includes('dangerous') || lower.includes('solo travel') || lower.includes('is it safe') || lower.includes('crime')) return KB.safety;
+    if (lower.includes('tap water') || lower.includes('drink water') || lower.includes('water safe') || lower.includes('ice cube')) return KB.tap_water;
+    if (lower.includes('toilet paper') || ws.includes(' flush ') || lower.includes('bum gun')) return KB.toilet;
+    if (lower.includes('remove shoes') || lower.includes('shoes off') || lower.includes('take off shoes')) return KB.shoes;
+    if (lower.includes('temple') || lower.includes('pagoda') || lower.includes('dress code') || lower.includes('cover up') || lower.includes('religious site') || lower.includes('what to wear')) return KB.temple;
+    if (lower.includes('speak english') || lower.includes('english speaker') || lower.includes('language barrier') || lower.includes('communicate')) return KB.english;
+    if (lower.includes('sim card') || (ws.includes(' sim ') && (lower.includes('data') || lower.includes('phone') || lower.includes('internet')))) return KB.sim;
+    if (ws.includes(' hotel ') || ws.includes(' hostel ') || lower.includes('where to stay') || ws.includes(' accommodation ') || ws.includes(' resort ') || ws.includes(' airbnb ')) return KB.accommodation;
+    if (ws.includes(' vaccination ') || ws.includes(' vaccine ') || ws.includes(' mosquito ') || ws.includes(' dengue ') || lower.includes('health advice')) return KB.health;
+    if (ws.includes(' packing ') || lower.includes('what to bring') || lower.includes('what to pack') || ws.includes(' luggage ') || ws.includes(' suitcase ')) return KB.packing;
+    if (ws.includes(' airline ') || lower.includes('best airline') || lower.includes('fly to vietnam') || ws.includes(' airways ')) return KB.airline;
+    if (ws.includes(' tipping ') || (ws.includes(' tip ') && !lower.includes('tip:')) || ws.includes(' gratuity ')) return KB.tipping;
+    if (ws.includes(' nightlife ') || lower.includes('night out') || lower.includes('bar scene') || ws.includes(' clubbing ') || ws.includes(' party ')) return KB.nightlife;
+    if (lower.includes('transport') || lower.includes('get around') || lower.includes('how to travel') || lower.includes('flight') || ws.includes(' train ') || ws.includes(' bus ')) return KB.transport;
+    if (ws.includes(' food ') || ws.includes(' eat ') || ws.includes(' dish ') || ws.includes(' pho ') || ws.includes(' banh mi ') || lower.includes('street food') || lower.includes('must try') || lower.includes('cuisine')) return KB.food;
+
+    // City guides — only match if message is ABOUT that city
+    if (/\b(halong|ha long)\b/.test(lower)) return KB.halong;
+    if (/\b(hoi an|hoian)\b/.test(lower)) return KB.hoian;
+    if (/\b(ho chi minh|saigon|hcmc)\b/.test(lower)) return KB.hcmc;
+    if (/\b(nha trang|nhatrang)\b/.test(lower)) return KB.nhatrang;
+    if (/\b(phu quoc|phuquoc)\b/.test(lower)) return KB.phuquoc;
+    if (/\b(da nang|danang)\b/.test(lower)) return KB.danang;
+    if (/\bhue\b/.test(lower)) return KB.hue;
+    if (/\b(hanoi|ha noi)\b/.test(lower)) return KB.hanoi;
+
+    return KB.default;
+  }
+}
+// ── NAVIGATION ────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  const nv = document.getElementById('nav-' + id);
+  if (pg) pg.classList.add('active');
+  if (nv) nv.classList.add('active');
+  appContext.page = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'map') {
+    window.mapPageOpen = true;
+    setTimeout(() => {
+      if (window.googleMapsReady) initGoogleMap();
+      else renderList(getFiltered());
+    }, 150);
+  }
+}
+
+// ── GOOGLE MAPS INIT ──────────────────────────────────────────
+function onGoogleMapsReady() {
+  window.googleMapsReady = true;
+  if (window.mapPageOpen) initGoogleMap();
+}
+
+function initGoogleMap() {
+  const el = document.getElementById('map-container');
+  if (!el || !window.google) return;
+  el.innerHTML = '';
+  dirService  = new google.maps.DirectionsService();
+  dirRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: false });
+  const c = cityCentres[activeCity] || cityCentres.all;
+  googleMap = new google.maps.Map(el, {
+    center: { lat: c.lat, lng: c.lng }, zoom: c.zoom,
+    mapTypeId: 'roadmap', mapTypeControl: false,
+    streetViewControl: true, fullscreenControl: true,
+    styles: [
+      { featureType:'water',      elementType:'geometry',     stylers:[{ color:'#a8d5e8' }] },
+      { featureType:'landscape',  elementType:'geometry',     stylers:[{ color:'#f5f0e8' }] },
+      { featureType:'road',       elementType:'geometry',     stylers:[{ color:'#ffffff' }] },
+      { featureType:'road.arterial', elementType:'geometry',  stylers:[{ color:'#f7dda0' }] },
+      { featureType:'road.highway',  elementType:'geometry',  stylers:[{ color:'#f7c97a' }] },
+      { featureType:'poi.park',   elementType:'geometry',     stylers:[{ color:'#c8e6c2' }] },
+      { featureType:'transit',    stylers:[{ visibility:'off' }] },
+    ]
+  });
+  dirRenderer.setMap(googleMap);
+  infoWin = new google.maps.InfoWindow();
+  renderAll();
+}
+
+function toggle3D() {
+  is3D = !is3D;
+  const btn = document.getElementById('toggle-3d-btn');
+  if (is3D) {
+    btn.textContent = '2D map'; btn.classList.add('active-3d');
+    const el = document.getElementById('map-container');
+    el.innerHTML = '';
+    googleMap = new google.maps.Map(el, {
+      center: { lat: 21.0285, lng: 105.8542 }, zoom: 15,
+      tilt: 67.5, heading: 45, mapId: 'DEMO_MAP_ID', mapTypeId: 'hybrid',
+      mapTypeControl: false, streetViewControl: false,
+    });
+    if (dirRenderer) dirRenderer.setMap(googleMap);
+    renderGoogleMarkers(getFiltered());
+    showToast('🌍 3D mode — scroll to zoom, drag to rotate');
+  } else {
+    btn.textContent = '🌍 3D mode'; btn.classList.remove('active-3d');
+    initGoogleMap();
+    showToast('🗺️ Back to 2D map');
+  }
+}
+
+// ── MAP MARKERS ───────────────────────────────────────────────
+function makeGIcon(p) {
+  return {
+    path: window.google ? google.maps.SymbolPath.CIRCLE : 0,
+    scale: catSizes[p.cat] || 9,
+    fillColor: catColors[p.cat], fillOpacity: 1,
+    strokeColor: '#ffffff', strokeWeight: 2
+  };
+}
+
+function renderGoogleMarkers(filtered) {
+  gMarkers.forEach(m => m.setMap(null));
+  gMarkers = [];
+  filtered.forEach(p => {
+    const m = new google.maps.Marker({ position: { lat: p.lat, lng: p.lng }, map: googleMap, title: p.name, icon: makeGIcon(p) });
+    m.addListener('click', () => { currentPlace = p; selectPlace(p.id); showGInfoWindow(p, m); });
+    gMarkers.push(m);
+  });
+}
+
+function showGInfoWindow(p, marker) {
+  infoWin.setContent(
+    '<div style="font-family:-apple-system,sans-serif;padding:4px;max-width:230px;">' +
+    '<div style="font-size:14px;font-weight:700;color:#0D1B2A;margin-bottom:2px;">' + p.icon + ' ' + p.name + '</div>' +
+    '<div style="font-size:10px;font-weight:700;color:#C9A84C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">' + catLabels[p.cat] + '</div>' +
+    '<div style="font-size:12px;color:#7a6a52;line-height:1.45;margin-bottom:10px;">' + p.desc + '</div>' +
+    '<button onclick="openPlaceDetail()" style="background:#0D1B2A;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;font-weight:600;margin-right:5px;">More info</button>' +
+    '<button onclick="setAsDestination()" style="background:#FBF7EE;color:#8B6914;border:1px solid #C9A84C;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;font-weight:600;">Set destination</button>' +
+    '</div>'
+  );
+  infoWin.open(googleMap, marker);
+}
+
+function getFiltered() {
+  return places.filter(p => {
+    const cityOk = activeCity === 'all' || p.city === activeCity || p.city === 'all';
+    const catOk  = activeCat === 'all' || p.cat === activeCat;
+    const srchOk = !searchVal || p.name.toLowerCase().includes(searchVal.toLowerCase());
+    return cityOk && catOk && srchOk;
+  });
+}
+
+function renderAll() {
+  const f = getFiltered();
+  if (window.googleMapsReady && googleMap) renderGoogleMarkers(f);
+  renderList(f);
+}
+
+function renderList(filtered) {
+  const el = document.getElementById('places-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (!filtered.length) { el.innerHTML = '<div style="padding:14px;font-size:12px;color:#9a8a72;text-align:center;">No places found</div>'; return; }
+  filtered.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'place-item' + (selectedId === p.id ? ' selected' : '');
+    d.id = 'place-item-' + p.id;
+    d.innerHTML =
+      '<div class="place-item-top"><div class="place-dot dot-' + p.cat + '"></div><span class="place-name">' + p.icon + ' ' + p.name + '</span></div>' +
+      '<div class="place-cat">' + catLabels[p.cat] + '</div>' +
+      '<div class="place-coords">' + p.lat.toFixed(4) + '°N ' + p.lng.toFixed(4) + '°E</div>';
+    d.onclick = () => selectPlace(p.id);
+    el.appendChild(d);
+  });
+}
+
+function selectPlace(id) {
+  selectedId = id;
+  currentPlace = places.find(x => x.id === id);
+  if (!currentPlace) return;
+  if (googleMap) { googleMap.panTo({ lat: currentPlace.lat, lng: currentPlace.lng }); googleMap.setZoom(15); }
+  document.getElementById('info-name').textContent = currentPlace.icon + ' ' + currentPlace.name;
+  document.getElementById('info-cat').textContent  = catLabels[currentPlace.cat];
+  document.getElementById('info-desc').textContent = currentPlace.desc;
+  document.getElementById('info-coords').textContent = currentPlace.lat.toFixed(6) + '°N, ' + currentPlace.lng.toFixed(6) + '°E';
+  document.getElementById('map-info').classList.add('visible');
+  document.querySelectorAll('.place-item').forEach(e => e.classList.remove('selected'));
+  const li = document.getElementById('place-item-' + id);
+  if (li) { li.classList.add('selected'); li.scrollIntoView({ block: 'nearest' }); }
+  appContext.place = currentPlace.name;
+  // Smart route fill
+  const fi = document.getElementById('route-from'), ti = document.getElementById('route-to');
+  if (fi && ti) {
+    if (!fi.value) { fi.value = currentPlace.name; }
+    else if (!ti.value) {
+      ti.value = currentPlace.name;
+      const rb = document.querySelector('.route-btn');
+      if (rb) { rb.style.background = '#1D9E75'; rb.textContent = '🗺️ Ready — Get route'; setTimeout(() => { rb.style.background = ''; rb.textContent = '🗺️ Get route'; }, 2500); }
+    }
+  }
+}
+
+function closeInfo() { document.getElementById('map-info').classList.remove('visible'); if (infoWin) infoWin.close(); }
+function setAsDestination() { if (!currentPlace) return; const t = document.getElementById('route-to'); if (t) t.value = currentPlace.name; closeInfo(); }
+function setRoutePoint() { setAsDestination(); }
+
+function askAIAboutPlace() {
+  closeInfo();
+  if (!currentPlace) return;
+  openChat('Tell me everything about ' + currentPlace.name + ' in Vietnam. What should I know as a tourist? What is there to see, eat, and do?');
+}
+
+function filterPlaces(val) { searchVal = val; renderAll(); }
+function filterByCategory(cat, el) {
+  activeCat = cat;
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderAll();
+}
+
+function selectCity(city, el) {
+  activeCity = city;
+  document.querySelectorAll('.city-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  appContext.city = city === 'all' ? null : city;
+  renderAll();
+  if (googleMap) {
+    const c = cityCentres[city] || cityCentres.all;
+    googleMap.panTo({ lat: c.lat, lng: c.lng });
+    googleMap.setZoom(c.zoom);
+  }
+  if (city !== 'all') fetchWeather(city);
+  else document.getElementById('weather-widget').style.display = 'none';
+}
+
+// ── WEATHER ───────────────────────────────────────────────────
+async function fetchWeather(city) {
+  const c = cityCentres[city];
+  if (!c) return;
+  if (wxCache[city]) { showWeather(wxCache[city], cityNames[city] || city); return; }
+  try {
+    const r = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + c.lat + '&lon=' + c.lng + '&appid=' + WEATHER_KEY + '&units=metric');
+    const d = await r.json();
+    wxCache[city] = d;
+    showWeather(d, cityNames[city] || city);
+  } catch (e) { console.warn('Weather failed:', e); }
+}
+
+function showWeather(d, name) {
+  const el = document.getElementById('weather-widget');
+  if (!el) return;
+  const t = Math.round(d.main.temp), f = Math.round(d.main.feels_like);
+  const id = d.weather[0].id;
+  const icon = id >= 200 && id < 300 ? '⛈️' : id >= 300 && id < 400 ? '🌦️' : id >= 500 && id < 600 ? '🌧️' : id >= 600 && id < 700 ? '❄️' : id >= 700 && id < 800 ? '🌫️' : id === 800 ? '☀️' : id <= 802 ? '🌤️' : '☁️';
+  const wind = Math.round(d.wind.speed * 3.6);
+  let alert = '';
+  if (id >= 200 && id < 300) alert = '⚡ Thunderstorm warning — stay indoors';
+  else if (t > 38) alert = '🌡️ Extreme heat — stay hydrated, use sunscreen';
+  else if (d.rain && d.rain['1h'] > 10) alert = '🌧️ Heavy rain — carry an umbrella';
+  el.style.display = 'flex';
+  el.innerHTML =
+    '<div class="weather-main">' +
+    '<div class="weather-icon">' + icon + '</div>' +
+    '<div><div class="weather-city">' + name + '</div><div class="weather-temp">' + t + '°C<span>Feels ' + f + '°C</span></div><div class="weather-desc">' + d.weather[0].description + '</div></div>' +
+    '<div class="weather-extras"><div>💧 ' + d.main.humidity + '%</div><div>💨 ' + wind + ' km/h</div></div>' +
+    '</div>' + (alert ? '<div class="weather-alert">' + alert + '</div>' : '');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('map-toast');
+  if (!t) {
+    t = document.createElement('div'); t.id = 'map-toast';
+    t.style.cssText = 'position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#0D1B2A;color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;z-index:600;pointer-events:none;white-space:nowrap;transition:opacity .3s;';
+    const mc = document.getElementById('map-container');
+    if (mc && mc.parentElement) mc.parentElement.appendChild(t);
+  }
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._t); t._t = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
+
+// ── ROUTE PLANNER ─────────────────────────────────────────────
+const placeCity = {
+  'Noi Bai International Airport':'hanoi','Hoan Kiem Lake':'hanoi','Hanoi Old Quarter':'hanoi','Ho Chi Minh Mausoleum':'hanoi','Temple of Literature':'hanoi','Pho 10 — Hanoi':'hanoi','Bun Cha Huong Lien':'hanoi','Banh Mi 25':'hanoi',
+  'War Remnants Museum':'hcmc','Ben Thanh Market':'hcmc','Reunification Palace':'hcmc','Tan Son Nhat Airport':'hcmc','Pho Hoa Pasteur':'hcmc',
+  'My Khe Beach':'danang','Marble Mountains':'danang','Ba Na Hills Golden Bridge':'danang','Da Nang International Airport':'danang','Banh Xeo Ba Duong':'danang',
+  'Hoi An Ancient Town':'hoian','Japanese Covered Bridge':'hoian','White Rose Restaurant':'hoian','Cao Lau Thanh':'hoian',
+  'Imperial Citadel of Hue':'hue','Thien Mu Pagoda':'hue',
+  'Nha Trang Beach':'nhatrang','Cam Ranh Airport':'nhatrang',
+  'Sao Beach':'phuquoc','Phu Quoc Airport':'phuquoc','Phu Quoc Night Market':'phuquoc',
+  'Halong Bay':'halong',
+};
+
+function getCityForPlace(name) {
+  if (placeCity[name]) return placeCity[name];
+  for (const k of Object.keys(placeCity)) { if (name.includes(k) || k.includes(name)) return placeCity[k]; }
+  for (const c of Object.keys(cityNames)) { if (name.toLowerCase().includes(c) || name.toLowerCase().includes(cityNames[c].toLowerCase())) return c; }
+  return null;
+}
+
+function calculateRoute() {
+  const fromVal = document.getElementById('route-from').value.trim();
+  const toVal   = document.getElementById('route-to').value.trim();
+  if (!fromVal || !toVal) { showRouteErr('Please enter a start point and a destination — or click two pins on the map.'); return; }
+  if (fromVal === toVal) { showRouteErr('Start and destination are the same — please choose two different locations.'); return; }
+  const panel = document.getElementById('route-result');
+  panel.classList.add('visible');
+  document.getElementById('route-title').textContent = fromVal + ' → ' + toVal;
+  document.getElementById('route-options').innerHTML = '<div class="route-loading">⏱ Finding best routes...</div>';
+  setTimeout(() => {
+    const fc = getCityForPlace(fromVal), tc = getCityForPlace(toVal);
+    let opts = null;
+    if (fc && tc && fc !== tc) { const k = getRouteKey(fc, tc); if (k) opts = routes[k]; }
+    if (!opts) {
+      const local = !fc || !tc || fc === tc;
+      opts = local ? [
+        { icon:'📱', name:'Grab Car',   detail:'Safest and easiest local option via Grab app', price:'£1–8',   time:'5–30 min',  url:'https://grab.com'   },
+        { icon:'🛵', name:'Grab Bike',  detail:'Cheaper motorbike option through Grab',         price:'£0.50–3', time:'5–20 min',  url:'https://grab.com'   },
+        { icon:'🚶', name:'Walk',       detail:'May be walkable — check Google Maps distance',  price:'Free',    time:'10–45 min', url:null                 },
+      ] : [
+        { icon:'✈️', name:'Domestic flight', detail:'Check VietJet or Vietnam Airlines',  price:'£15–80', time:'1–2 hours',  url:'https://www.vietjetair.com' },
+        { icon:'🚆', name:'Train',           detail:'Reunification Express — scenic',     price:'£8–45',  time:'2–30 hours', url:'https://dsvn.vn'           },
+        { icon:'🚌', name:'Sleeper bus',     detail:'Budget overnight option via Vexere', price:'£5–20',  time:'Varies',     url:'https://vexere.com'        },
+        { icon:'📱', name:'Grab',            detail:'For shorter distances',              price:'£2–15',  time:'15–60 min',  url:'https://grab.com'          },
+      ];
+    }
+    // Try to draw on Google Maps too
+    const fp = places.find(p => p.name === fromVal), tp = places.find(p => p.name === toVal);
+    if (fp && tp && window.googleMapsReady && dirService) {
+      dirService.route({ origin: { lat: fp.lat, lng: fp.lng }, destination: { lat: tp.lat, lng: tp.lng }, travelMode: google.maps.TravelMode.DRIVING }, (result, status) => {
+        if (status === 'OK') {
+          dirRenderer.setDirections(result);
+          const leg = result.routes[0].legs[0];
+          showToast('📍 ' + leg.distance.text + ' by road · ' + leg.duration.text);
+        }
+      });
+    }
+    renderRouteOpts(opts, fromVal, toVal);
+  }, 700);
+}
+
+function renderRouteOpts(opts, from, to) {
+  const el = document.getElementById('route-options');
+  el.innerHTML = '';
+  opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'route-option' + (i === 0 ? ' route-option-best' : '');
+    d.innerHTML =
+      (i === 0 ? '<div class="route-best-badge">⭐ Recommended</div>' : '') +
+      '<div class="route-opt-left"><div class="route-opt-icon">' + o.icon + '</div><div><div class="route-opt-name">' + o.name + '</div><div class="route-opt-detail">' + o.detail + '</div></div></div>' +
+      '<div class="route-opt-right"><div><div class="route-opt-price">' + o.price + '</div><div class="route-opt-time">⏱ ' + o.time + '</div></div>' +
+      (o.url ? '<button class="route-book-btn" onclick="window.open(\'' + o.url + '\',\'_blank\')">Book →</button>' : '') +
+      '</div>';
+    el.appendChild(d);
+  });
+  const ai = document.createElement('button');
+  ai.className = 'route-ai-btn';
+  ai.textContent = '🤖 Ask AI for detailed advice on this journey';
+  ai.onclick = () => openChat('I am travelling from ' + from + ' to ' + to + ' in Vietnam. Give me detailed advice — best transport option, how to book, cost, duration, and any tips specific to this journey.');
+  el.appendChild(ai);
+}
+
+function showRouteErr(msg) {
+  document.getElementById('route-result').classList.add('visible');
+  document.getElementById('route-title').textContent = 'Route planner';
+  document.getElementById('route-options').innerHTML = '<div class="route-error">' + msg + '</div>';
+}
+
+function clearRoute() {
+  document.getElementById('route-from').value = '';
+  document.getElementById('route-to').value   = '';
+  document.getElementById('route-result').classList.remove('visible');
+  if (dirRenderer) dirRenderer.setDirections({ routes: [] });
+}
+
+function closeRouteResult() { document.getElementById('route-result').classList.remove('visible'); }
+function swapRouteMini() { const f = document.getElementById('route-from'), t = document.getElementById('route-to'), tmp = f.value; f.value = t.value; t.value = tmp; }
+
+// ── TRANSPORT PAGE ────────────────────────────────────────────
+function updateTransportRoute() {
+  const f = document.getElementById('tp-from').value, t = document.getElementById('tp-to').value;
+  const res = document.getElementById('transport-results');
+  if (!f || !t) return;
+  if (f === t) { res.innerHTML = '<div class="transport-placeholder" style="color:#f0997b;">Please select two different cities.</div>'; return; }
+  const k = getRouteKey(f, t);
+  if (!k) {
+    res.innerHTML = '<div class="transport-placeholder">No specific route data yet. ' +
+      '<button onclick="openChat(\'How do I travel from ' + cityNames[f] + ' to ' + cityNames[t] + ' in Vietnam?\')" ' +
+      'style="background:#C9A84C;color:#0D1B2A;border:none;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700;margin-left:8px;">Ask AI →</button></div>';
+    return;
+  }
+  res.innerHTML = routes[k].map(o =>
+    '<div class="transport-result-item" onclick="window.open(\'' + o.url + '\',\'_blank\')">' +
+    '<div class="tri-left"><div class="tri-icon">' + o.icon + '</div><div><div class="tri-name">' + o.name + '</div><div class="tri-detail">' + o.detail + '</div></div></div>' +
+    '<div class="tri-right"><div class="tri-price">' + o.price + '</div><div class="tri-time">⏱ ' + o.time + '</div><a class="tri-book" href="' + o.url + '" target="_blank">Book →</a></div>' +
+    '</div>'
+  ).join('');
+}
+
+function swapTransportCities() {
+  const f = document.getElementById('tp-from'), t = document.getElementById('tp-to'), tmp = f.value;
+  f.value = t.value; t.value = tmp; updateTransportRoute();
+}
+
+// ── VISAS ─────────────────────────────────────────────────────
+function renderVisas(filter) {
+  const el = document.getElementById('visa-list');
+  if (!el) return;
+  const list = filter ? visas.filter(v => v.name.toLowerCase().includes(filter.toLowerCase())) : visas;
+  const cnt = document.getElementById('visa-count');
+  if (cnt) cnt.textContent = '(' + list.length + ' countries)';
+  el.innerHTML = list.map(v => {
+    const cls = v.status === 'free' ? 'vb-free' : v.status === 'evisa' ? 'vb-evisa' : 'vb-required';
+    return '<div class="visa-country" onclick="window.open(\'https://evisa.xuatnhapcanh.gov.vn\',\'_blank\')">' +
+      '<span>' + v.flag + ' ' + v.name + '</span>' +
+      '<span class="visa-badge ' + cls + '">' + v.label + '</span></div>';
+  }).join('');
+}
+function filterVisas(val) { renderVisas(val); }
+
+// ── PLACE DETAIL OVERLAY ──────────────────────────────────────
+function openPlaceDetail() {
+  if (!currentPlace) return;
+  document.getElementById('ov-icon').textContent  = currentPlace.icon;
+  document.getElementById('ov-title').textContent = currentPlace.name;
+  document.getElementById('ov-cat').textContent   = catLabels[currentPlace.cat];
+  document.getElementById('ov-desc').textContent  = currentPlace.desc;
+  document.getElementById('ov-coords').textContent = currentPlace.lat.toFixed(6) + '°N, ' + currentPlace.lng.toFixed(6) + '°E';
+  document.getElementById('place-overlay').classList.add('open');
+}
+function closePlaceDetail() { document.getElementById('place-overlay').classList.remove('open'); }
+function closePlaceOverlay(e) { if (e.target === document.getElementById('place-overlay')) closePlaceDetail(); }
+
+// ── AI CHAT ───────────────────────────────────────────────────
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('ai-chat-window').classList.toggle('open', chatOpen);
+  if (chatOpen) {
+    document.getElementById('ai-notif').style.display = 'none';
+    updateCtx();
+    setTimeout(() => { const i = document.getElementById('ai-input'); if (i) i.focus(); }, 150);
+  }
+}
+
+function openChat(msg) {
+  chatOpen = true;
+  document.getElementById('ai-chat-window').classList.add('open');
+  document.getElementById('ai-notif').style.display = 'none';
+  updateCtx();
+  if (msg) {
+    setTimeout(async () => {
+      addMsg(msg, true); addTyping();
+      const r = await getAIResponse(msg, appContext);
+      removeTyping(); addMsg(r, false);
+    }, 200);
+  }
+}
+
+function updateCtx() {
+  const ctx = document.getElementById('ai-chat-context');
+  const txt = document.getElementById('ai-context-text');
+  if (!ctx || !txt) return;
+  let m = '';
+  if (appContext.city) m += '📍 ' + (cityNames[appContext.city] || appContext.city) + '  ';
+  if (appContext.place) m += '🗺️ ' + appContext.place;
+  if (m) { txt.textContent = m; ctx.style.display = 'block'; } else ctx.style.display = 'none';
+}
+
+function addMsg(text, isUser) {
+  const msgs = document.getElementById('ai-messages');
+  if (!msgs) return;
+  const d = document.createElement('div');
+  d.className = 'ai-msg ' + (isUser ? 'ai-msg-user' : 'ai-msg-bot');
+  d.innerHTML = '<div class="ai-bubble-msg">' + text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') + '</div>';
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addTyping() {
+  const msgs = document.getElementById('ai-messages');
+  if (!msgs) return;
+  const d = document.createElement('div');
+  d.className = 'ai-msg ai-msg-bot'; d.id = 'typing-ind';
+  d.innerHTML = '<div class="ai-bubble-msg typing-bubble"><span></span><span></span><span></span></div>';
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+}
+function removeTyping() { const e = document.getElementById('typing-ind'); if (e) e.remove(); }
+
+async function sendAI(q) {
+  if (!chatOpen) toggleChat();
+  addMsg(q, true); addTyping();
+  const r = await getAIResponse(q, appContext);
+  removeTyping(); addMsg(r, false);
+}
+
+async function sendAIFromInput() {
+  const input = document.getElementById('ai-input');
+  if (!input) return;
+  const q = input.value.trim();
+  if (!q) return;
+  addMsg(q, true); input.value = ''; addTyping();
+  const r = await getAIResponse(q, appContext);
+  removeTyping(); addMsg(r, false);
+}
+
+// ── DATALIST AUTOCOMPLETE ─────────────────────────────────────
+function populateDatalist() {
+  const dl = document.getElementById('places-datalist');
+  if (!dl) return;
+  dl.innerHTML = '';
+  places.forEach(p => { const o = document.createElement('option'); o.value = p.name; dl.appendChild(o); });
+  Object.values(cityNames).forEach(c => { const o = document.createElement('option'); o.value = c; dl.appendChild(o); });
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Language system
+  storeOriginals();
+
+  // Data
+  renderVisas();
+  populateDatalist();
+  renderList(getFiltered());
+
+  // Chat enter key
+  const ai = document.getElementById('ai-input');
+  if (ai) ai.addEventListener('keydown', e => { if (e.key === 'Enter') sendAIFromInput(); });
+
+  // Load Google Maps
+  const s = document.createElement('script');
+  s.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY + '&callback=onGoogleMapsReady&libraries=places,geometry';
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+
+  // Show home
+  showPage('landing');
+});
+
+</script>
+</body>
+</html>
